@@ -5,7 +5,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `planteam` is to facilitate the developement of the annual summary using .Rmd files to
+The goal of `planteam` is to facilitate the development of the annual summary using .Rmd files to
 produce a word doc - that will likely be hosted on google docs for edits.
 
 ## Installation
