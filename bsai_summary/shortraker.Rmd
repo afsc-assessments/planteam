@@ -1,0 +1,49 @@
+## 11. Shortraker rockfish  
+Status and catch specifications (t) of shortraker rockfish in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+
+```{r}
+spp = c("shortraker rockfish", "shortraker")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
+*Changes from the previous assessment*  
+This assessment was changed to a biennial cycle beginning with the 2014 assessment; this is a full
+assessment year.
+Changes to the input data:
+1. The catch data have been revised and updated through October 25, 2020.
+2. There were no survey updates this year for the Aleutian Islands (AI) trawl survey or the eastern
+Bering Sea slope survey.
+No changes were made to the assessment model from the previous full assessment. 
+
+*Spawning biomass and stock trends*  
+Estimated shortraker rockfish biomass in the BSAI has been relatively stable since 2002. Increases in the
+2018 AI survey biomass estimates occurred in the western and eastern AI with a decrease in the central AI.
+According to the random effects model, total biomass (AI and EBS slope combined) from 2002-2018 has
+been very stable. The time series from the random effects model is much smoother than the time series for
+the raw data, due to large standard errors associated with the survey biomass estimates. Exploitation rates
+have generally been well below the ABC levels in all areas, except for the western area, where exploitation
+rates exceeded the ABC levels rom 2011-2013. 
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The SSC has previously determined that reliable estimates of only biomass and natural mortality exist for
+shortraker rockfish, qualifying the species for management under Tier 5. 
+The Team recommends basing the biomass estimate on the random effects model. 
+The Team recommended setting FABC at the maximum permissible level under Tier 5, which is 75 percent of M. The accepted value of M for this stock is 0.03 for shortraker rockfish, resulting in a maxFABC value of 0.0225. 
+The ABC is 541 t for 2021 and 2022 and the OFL is 722 t for 2021 and 2022.
+
+
+*Status determination*  
+Shortraker rockfish is not being subjected to overfishing. 
+It is not possible to determine whether this stock is overfished or whether it is approaching an overfished condition because it is managed under Tier 5.
+
+
+
+

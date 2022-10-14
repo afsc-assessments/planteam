@@ -1,0 +1,54 @@
+## 10. Northern rockfish  
+Status and catch specifications (t) of northern rockfish in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r}
+spp = c("northern rockfish", "nork")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
+*Changes from the previous assessment*  
+This chapter was presented as a full assessment. Changes to the input data included the following:
+• Updated catch data through 2020
+• Projected 2021 catch estimates
+• Fishery age data from 2019-2020
+Constraints on the selectivity curves used in 2019 to ensure that selectivity at age 15 was close to 1.0 were
+loosened in this assessment to ensure that full selectivity was achieved at age 30. Failing to apply these
+constraints results in selectivity curves that fail to reach 1, implying higher biomass. Changing the constraint
+from age 15 to age 30 allowed more flexibility in the model and better aligns with current understanding of
+rockfish whereby they are thought to be fully selected after some relatively old age. Furthermore, the
+constraint at age 30 is close to the plus age group for other Alaska rockfish. The fit to the AIsurvey biomass
+was relatively similar in multiple exploratory models, but the model with a constraint on the logistic curve
+at age-30 produced a slight downward trend in abundance in recent years, which is consistent with the
+empirical survey biomass estimates. Some of the positive changes in biomass and associated harvest levels
+in this assessment are due to changes in selectivity curves.
+
+
+*Spawning biomass and stock trends*  
+Overall, the stock abundance is high and the exploitation rates are low. The survey biomass estimates
+decreased by 10% from a peak in 2014, with decreases in all AI sub-areas and a large increase in the
+southern Bering Sea area. The survey biomass data show an increasing trend to a peak in 2014 and a decline
+since then. Estimated spawning and total biomass show a similar pattern, increasing until 2015 and 2014,
+respectively, and then decreasing through 2021. Spawning biomass is projected to increase to 121,126 t in
+2022 and decline to 117,333 t in 2023. Spatial management of the stock is not consistent with the genetic
+spatial structure; however, stock abundance is high and exploitation rates are low. Catches have been
+increasing since 2013 but showed a drop in 2021.
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+Since reliable estimates of the 2022 spawning biomass (B), B40%, F40%, and F35% exist and B>B40% (121,126
+t > 68,707 t ), northern rockfish is in Tier 3a. For this tier, FABC is defined as F40% and FOFL is defined as
+F35%. The values of F40% and F35% are 0.069 and 0.085, respectively. The 2022 overfishing level is 23,420 t
+and the 2022 maximum permissible ABC is 19,217 t.
+
+*Status determination*  
+This stock is not being subjected to overfishing, is not overfished, and is not approaching an overfished
+condition.
+
+
+

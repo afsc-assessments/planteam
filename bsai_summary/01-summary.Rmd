@@ -1,0 +1,272 @@
+---
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r}
+team = read.csv(here::here("bsai_summary", "data", "bsai_team.csv"))
+chair = paste(team %>% 
+          filter(chair==1) %>% 
+          pull(member) %>% 
+          paste("(co-chair)"), collapse = ", ")
+
+members = team %>% 
+            filter(is.na(chair)) %>% 
+            select(member) %>% 
+            pull(member)
+
+m1 = paste(members[-length(members)], collapse = ", ")
+m2 = members[length(members)]
+
+pt = paste0(chair, ", ",  m1," and ", m2)
+
+```
+
+# Summary
+
+The Stock Assessment and Fishery Evaluation (SAFE) report summarizes the best available scientific information concerning the past, present, and possible future condition of the stocks, marine ecosystems, and fisheries that are managed under Federal regulation.
+It provides information to the Councils for determining annual harvest levels from each stock, documenting significant trends or changes in the resource, marine ecosystems, and fishery over time, and assessing the relative success of existing state and Federal fishery management programs.
+For the FMP for the Groundfish Fishery of the Bering Sea and Aleutian Islands (BSAI) Area, the SAFE report is published in three reports: a *Stock Assessment* report, the *Economic Status of Groundfish Fisheries off Alaska* (i.e., the "Economic SAFE report") and the *Ecosystem Status Report* (by Area between the Eastern Bering Sea [EBS] and Aleutian Islands [AI]).
+
+The BSAI Groundfish FMP requires that a draft of the SAFE report be produced each year in time for the December meeting of the North Pacific Fishery Management Council.
+Each stock or stock complex is represented in the SAFE report by a chapter containing the latest stock assessment.
+New or revised stock assessment models are usually previewed at the September Plan Team meeting and considered again by the Team at its November meeting for recommending final specifications for the following two fishing years.
+This process is repeated annually.
+
+This Stock Assessment section of the SAFE report for the BSAI groundfish fisheries is compiled by the BSAI Groundfish Plan Team from chapters contributed by scientists at NMFS Alaska Fisheries Science Center (AFSC).
+These chapters include a recommendation by the author(s) for the overfishing level (OFL) and acceptable biological catch (ABC) for each stock and stock complex managed under the FMP for the next two fishing years.
+This introductory section includes the recommendations of the Team (Table 1), along with a summary of each chapter, including the Ecosystem Status Report and the Economic SAFE report.
+
+The OFL and ABC recommendations by the Plan Team are reviewed by the Scientific and Statistical Committee (SSC), which may confirm the Team recommendations or develop its own.
+The Team and SSC recommendations, together with social and economic factors, are considered by the Council in determining total allowable catches (TACs) and other measures used to manage the fisheries.
+Neither the author(s), Team, nor SSC typically recommends TACs.
+The BSAI Groundfish Plan Team met remotely via the internet on `r meeting_dates` to review the status of stocks of twenty-three species or species groups that are managed under the FMP.
+The Plan Team review was based on presentations by ADF&G and NMFS AFSC scientists with opportunity for public comment and input.
+Members of the BSAI Groundfish Plan Team who compiled this SAFE report were: `r pt`.
+
+## Background
+
+The BSAI management area lies within the 200-mile U.S.
+Exclusive Economic Zone (EEZ) of the US (Figure 1).
+International North Pacific Fisheries Commission (INPFC) statistical areas 1 and 2 comprise the EBS.
+The Aleutian Islands (AI) region is INPFC Area 5.
+Amendment 95 to the BSAI Groundfish FMP, which was implemented in 2010 for the start of the 2011 fishing year, defined three categories of species or species groups that are likely to be taken in the groundfish fishery.
+Species may be split or combined within the "target species" category according to procedures set forth in the FMP.
+The three categories of finfishes and invertebrates that have been designated for management purposes under two management classifications are listed below.
+
+
+<u>In the Fishery</u>:\
+<u>Target species</u> -- are those species that support a single species or mixed species target fishery, are commercially important, and for which a sufficient database exists that allows each to be managed on its own biological merits.
+Accordingly, a specific total allowable catch (TAC) is established annually for each target species or species assemblage.
+Catch of each species must be recorded and reported.
+Stocks/assemblages in the target category are listed below.
+
+<u>Ecosystem Component</u>:
+
+1)  <u>Prohibited Species</u> -- are those species and species groups the catch of which must be avoided while fishing for groundfish, and which must be immediately returned to sea with a minimum of injury except when their retention is authorized by other applicable law.
+Groundfish species and species groups under the FMP for which the quotas have been achieved shall be treated in the same manner as prohibited species.
+
+2)  <u>Forage fish species</u> -- are those species listed in the table below, which are a critical food source for many marine mammal, seabird and fish species.
+The forage fish species category is established to allow for the management of these species in a manner that prevents the development of a commercial directed fishery for forage fish. 
+Management measures for this species category will be specified in regulations. 
+These may include measures prohibiting directed fishing, limiting allowable bycatch retention, or limiting commercial exchange and the processing of forage fish in a commercial facility.
+
+The following lists the BSAI stocks within these FMP species categories:
+
+```{r}
+flextable::flextable(data.frame(infish = c("Target species", "Ecosystem Component","Prohibited Species", 
+                                             "Forage Fish Species"),
+                                  species = c("walleye pollock, Pacific cod, sablefish, 
+            yellowfin sole, Greenland turbot, arrowtooth flounder, Kamchatka flounder, northern rock sole, Alaska plaice,
+            other flatfish, Pacific ocean perch, northern rockfish, rougheye/blackspotted rockfish, shortraker rockfish,
+            other rockfish, Atka mackerel, skates, sharks, octopus",
+            "Ecosystem Component",
+            "Pacific halibut, Pacific herring, Pacific salmon, Steelhead trout, King crab, Tanner crab",
+            "Osmeridae family (eulachon, capelin, and other smelts), Myctophidae family (lanternfishes), Bathylagidae family (deep-sea smelts), Ammodytidae family (Pacific sand lance), Trichodontidae family (Pacific sand fish), Pholidae family (gunnels), Stichaeidae family (pricklebacks, warbonnets, eelblennys, cockscombs, and shannys), Gonostomatidae family (bristlemouths, lightfishes, and anglemouths), Order Euphausiacea (krill), Squid, Sculpins"))) %>% 
+    flextable::footnote(i=1, j=1, value=flextable::as_paragraph(c("TAC for each listing. Species and species groups may or may not be targets of directed fisheries.")), part="body", ref_symbols = "1") %>% 
+      flextable::footnote(i=3, j=1, value=flextable::as_paragraph(c("Must be immediately returned to the sea, except when retention is required or authorized.")), part="body", ref_symbols = "2") %>% 
+      flextable::footnote(i=4, j=1, value=flextable::as_paragraph(c("Management measures for forage fish are established in regulations implementing the FMP.")), part="body", ref_symbols = "3") %>% 
+    flextable::font(fontname = "Times New Roman", part = "all") %>%
+    flextable::fontsize(size = 11, part = "all") %>% 
+    flextable::width(j=2, 5) %>% 
+    flextable::set_header_labels(infish = "In Fishery",
+                                 species = "") %>% 
+    flextable::bold(i=2, j=1) %>% 
+  flextable::bold(j=1, part='header') %>% 
+    flextable::merge_h(i=2) %>% 
+  flextable::border_remove() %>%
+    flextable::hline_top(part = "header") %>%
+    flextable::hline_top() %>% 
+  flextable::hline(i=2) %>% 
+  flextable::hline_bottom() %>% 
+  flextable::fontsize(i=1:3, size = 7, part='footer') %>% 
+  flextable::padding(i=1:3, part="footer", padding.top = 0) %>%
+  flextable::padding(i=1:3, part="footer", padding.bottom = 0)
+
+```
+
+In 2019, the NPFMC took final action to amend the FMPs for the BSAI (Amendment 121) and GOA (Amendment 110) and moved the sculpin stock complex into the ecosystem component category and establish an MRA of 20% for sculpins for all basis species in both the BSAI and GOA.
+Amendments 121/110 and their implementing regulations were approved by the Secretary of Commerce in August 2020 (85 FR 133,41427).
+Sculpins are, therefore, categorized as an ecosystem component species and information on sculpins will be contained in a report produced every four years.
+
+## Historical catch statistics
+Catch statistics since 1954 are shown for the Eastern Bering Sea (EBS) subarea in Table 4. 
+The initial target species in the BSAI commercial fisheries was yellowfin sole. 
+During this period, total catches of groundfish peaked at 674,000 t in 1961. 
+Following a decline in abundance of yellowfin sole, other species (principally walleye pollock) were targeted, and total catches peaked at 2.2 million t in 1972. 
+Pollock is now the principal fishery, with catches peaking at approximately 1.4-1.5 million t due to years of high recruitment. 
+After the Magnuson-Stevens Fishery Conservation and Management Act (MSFCMA) was adopted in 1976, catch restrictions and other management measures were placed on the fishery and total groundfish catches have since varied from one to two million t. 
+In 2005, Congress implemented a statutory cap on TACs for BSAI groundfish of 2 million t, which had previously been a policy adopted by the Council.
+
+Catches in the Aleutian Islands (AI) subarea are much less than in the EBS (Table 5). 
+Total AI catches peaked at 190,750 t in 1996. 
+Total AI catches were 144,446 t in 2010, and dropped to 103,804 t in 2012. 
+Total catch decreased again in 2015 to 99,916 t but generally increased since then. 
+Recent increases are largely due to increased catch of Atka mackerel and Pacific cod.
+
+The predominance of target species in the AI has changed over the years. 
+Pacific ocean perch (POP) was the initial target species. 
+As POP abundance declined, the fishery diversified to target different species. 
+Atka mackerel was the largest fishery in the AI at 50,600 t in 2011 and 46,859 t in 2012 (down from 68,496 t in 2010).
+Catches since 2015 have been higher due to modifications in the Steller sea lion protection measures. 
+POP was the second largest fishery since 2013 
+Pacific ocean perch displaced Pacific cod as the second largest fishery beginning in 2011, as Pacific cod catch dropped from 29,001 t in 2010 to 9,064 in 2015 as a result of Steller sea lion protection measures.
+Total catches since 1954 for the BSAI, combined, are shown in Table 6. 
+
+## Recent total allowable catches
+
+Amendment 1 to the BSAI Groundfish FMP provided the framework to manage the groundfish resources as a complex.
+Maximum sustainable yield (MSY) for the BSAI groundfish complex was estimated at 1.8 to 2.4 million t. 
+The OY range was set at 85% of the MSY range, or 1.4 to 2.0 million t. 
+The sum of the TACs equals OY for the groundfish complex, which is constrained by the 2.0 million t cap on OY. Recent total TACs have been set equal to the OY cap.
+
+Establishment of the Western Alaska Community Development Quota (CDQ) Program annual groundfish reserves is concurrent with the annual BSAI groundfish harvest specifications. 
+Once annual BSAI groundfish TACs are established, the CDQ Program is allocated set portions of the TACs for certain species and species assemblages.
+This includes 10% of the BS and AI pollock TACs, 20% of the fixed gear sablefish TAC, and 7.5% of the sablefish trawl gear allocation. 
+It also receives 10.7% of the TACs for Pacific cod, yellowfin sole, rock sole, flathead sole, Atka mackerel, AI Pacific ocean perch, arrowtooth flounder, and BS Greenland turbot. 
+The program also receives allocations of PSC limits.
+
+The TAC specifications for the primary allocated species, and PSC limit specifications, are recommended by the Council at its December meetings. 
+The State of Alaska (State) manages separate Pacific cod guideline harvest level (GHL) fisheries in the Bering Sea subarea (starting in 2006) and Aleutian Islands subarea (starting in 2014). 
+The State’s Pacific cod GHL fisheries are conducted independently of the Federal groundfish fisheries under direct regulation of the State. 
+The GHL amounts for 2020 for each subarea are derived as 9% of the Bering Sea ABC (and an additional 45 t to the State jig fishery) and 39% of the Aleutian Islands subarea ABC to a maximum of 15 million pounds (6804 t). 
+The Council is expected to set the TAC for each subarea to account for the two State GHL fisheries. This is necessary to prevent harvest levels, GHL plus TAC, from exceeding the ABCs.
+
+For the BSAI reserves, 15% of the TAC for each target species, except for pollock, the hook-and-line and pot gear allocation of sablefish, and the Amendment 80 species (Pacific cod, Atka mackerel, flathead sole, rock sole, yellowfin sole, and Aleutian Islands Pacific ocean perch), are automatically apportioned to a non-specified reserve. 
+Apportionments to the non-specified reserve range from 4.3% to 15% of the TAC for each species or species group. 
+The non-specified reserve is used to (1) correct operational problems in the fishing fleets, (2) promote full and efficient use of groundfish resources, (3) adjust species TACs according to changing conditions of stocks during the fishing year, and (4) make apportionments and Community Development Quota allocations. The initial TAC (ITAC) for each species is the remainder of the TAC after the subtraction of the reserve.
+
+
+```{r}
+data.frame(nosplit = c('Pacific cod', 'Atka mackerel', 'shortraker rockfish', 'rougheye/blackspotted rockfish', 'thornyhead', 'northern rockfish', 'demersal shelf rockfish', 'all skates', 'sharks', 'octopus'),
+           splitpoint= c('walleye pollock', 'sablefish', 'deepwater flatfish', 'shallow-water flatfish', 'rex sole', 'arrowtooth flounder', 'flathead sole', 'other rockfish', '', ''), 
+           split95 = c('Pacific ocean perch', 'dusky rockfish', rep('', 8))) %>% 
+  flextable::flextable() %>% 
+  flextable::width(j=1:3, c(1, 2.5, 2.5)) %>% 
+  flextable::set_header_labels(nosplit = "No split",
+                               splitpoint = "Split, Point estimate",
+                               split95 = "Split, Upper 95% CI") %>% 
+      flextable::font(fontname = "Times New Roman", part = "all") %>%
+    flextable::fontsize(size = 11, part = "all") %>% 
+    flextable::bold(j=1:3, part='header') %>% 
+    flextable::border_remove() %>%
+    flextable::hline_top(part = "header") %>%
+    flextable::hline_top() %>% 
+    flextable::hline_bottom()
+
+```
+
+*Biological Reference Points*
+A number of biological reference points are used in this SAFE.
+Among these are the fishing mortality rate (*F*) and stock biomass level (*B*) associated with MSY ($F_{MSY}$ and $B_{MSY}$, respectively).
+Fishing mortality rates reduce the level of spawning biomass per recruit to some percentage *P* of the pristine level ($F_{P\%}$).
+The fishing mortality rate used to compute ABC is designated FABC, and the fishing mortality rate used to compute the overfishing level (OFL) is designated $F_{OFL}$.
+
+*Definition of Acceptable Biological Catch and the Overfishing Level*\
+Amendment 56 to the BSAI Groundfish FMP, which was implemented in 1999, defines ABC and OFL for the BSAI groundfish fisheries.
+The  definitions are shown below, where the fishing mortality rate is denoted $F$, stock biomass (or spawning stock biomass, as appropriate) is denoted $B$, and the $F$ and $B$ levels corresponding to MSY are denoted $F_{MSY}$ and $B_{MSY}$ respectively.
+
+<u>Acceptable Biological Catch</u> is a preliminary description of the acceptable harvest for a given stock or stock complex.
+Its derivation focuses on the status and dynamics of the stock, environmental conditions, other ecological factors, and prevailing technological characteristics of the fishery.
+The fishing mortality rate used to calculate ABC is capped as described under "overfishing" below.
+
+<u>Overfishing</u> is defined as any amount of fishing more than a prescribed maximum allowable rate.
+This maximum allowable rate is prescribed through a set of six tiers which are listed below in descending order of preference, corresponding to descending order of information availability.
+The SSC will have final authority for determining whether a given item of information is reliable for this definition and may use either objective or subjective criteria in making such determinations.
+For Tier (1), a pdf refers to a probability density function.
+For Tiers (1-2), if a reliable pdf of $B_{MSY}$ is available, the preferred point estimate of $B_{MSY}$ is the geometric mean of its pdf.
+For Tiers (1-5), if a reliable pdf of B is available, the preferred point estimate is the geometric mean of its pdf.
+For Tiers (1-3), the coefficient $\alpha$ is set at a default value of 0.05, with the understanding that the SSC may establish a different value for a specific stock or stock complex as merited by the best available scientific information.
+For Tiers (2-4), a designation of the form "$F_{X\%}$" refers to the *F* associated with an equilibrium level of spawning per recruit (SPR) equal to X% of the equilibrium level of spawning per recruit in the absence of any fishing.
+If reliable information sufficient to characterize the entire maturity schedule of a species is not available, the SSC may choose to view SPR calculations based on a knife-edge maturity assumption as reliable.
+For Tier (3), the term $B_{40\%}$ refers to the long-term average biomass that would be expected under average recruitment and $F=F_{40\%}$.
+
+
+
+**Tier**
+
+|  1) Information available: *Reliable point estimates of B and $B_{MSY}$ and reliable pdf of $F_{MSY}$*.  
+|      1a) Stock status: $B/B_{MSY}>1$  
+|            $F_{OFL}=\mu_A$, *the arithmetic mean of the pdf*  
+|            $F_{ABC}=\mu_H$, *the harmonic mean of the pdf*  
+|      1b) Stock status: $\alpha<B/B_{MSY}\le1$  
+|            $F_{OFL}=\mu_A \times(B/B_{msy}-\alpha)/(1-\alpha)$
+|            $F_{ABC}=\mu_H \times(B/B_{msy}-\alpha)/(1-\alpha)$
+|      1c) Stock status: $B/B_{MSY}\le\alpha$  
+|            $F_{OFL}=0$
+|            $F_{ABC}=0$
+|  2) Information available: *Reliable point estimates of B, $B_{MSY}$, $F_{MSY}$, $F_{35\%}$, and $F_{40\%}$*.  
+|      2a) Stock status: $B/B_{MSY}>1$  .
+|            $F_{OFL}=F_{MSY}$
+|            $F_{ABC}\le F_{MSY} \times(F_{40\%}/F_{35\%})$
+|      2b) Stock status: $\alpha<B/B_{MSY}\le1$  
+|            $F_{OFL}=F_{MSY} \times (B/B_{msy}-\alpha)/(1-\alpha)$
+|            $F_{ABC}=F_{MSY} \times(F_{40\%}/F_{35\%}) \times (B/B_{msy}-\alpha)/(1-\alpha)$
+|      2c) Stock status: $B/B_{MSY}\le\alpha$  
+|            $F_{OFL}=0$
+|            $F_{ABC}=0$
+|  3) Information available: *Reliable point estimates of B, $B_{40\%}$, $F_{35\%}$, and $F_{40\%}$*.  
+|      3a) Stock status: $B/B_{40\%}>1$  .
+|            $F_{OFL}=F_{35\%}$
+|            $F_{ABC}\le F_{40\%}$
+|      3b) Stock status: $\alpha<B/B_{40\%}\le1$  
+|            $F_{OFL}=F_{35\%} \times (B/B_{40\%}-\alpha)/(1-\alpha)$
+|            $F_{ABC}=F_{40\%} \times (B/B_{40\%}-\alpha)/(1-\alpha)$
+|      3c) Stock status: $B/B_{MSY}\le\alpha$  
+|            $F_{OFL}=0$
+|            $F_{ABC}=0$
+|  4) Information available: *Reliable point estimates of B, $F_{35\%}$, and $F_{40\%}$*.  
+|            $F_{OFL}=F_{35\%}$
+|            $F_{ABC}\le F_{40\%}$
+|  5) Information available: *Reliable point estimates of B, and natural mortality rate M*.  
+|            $F_{OFL}=M$
+|            $F_{ABC}\le 0.75 \times M$
+|  6) Information available: *Reliable catch history from 1978 through 1995*.  
+|            $OFL =$ *the average catch from 1978 through 1995, unless an alternative value is established by the* 
+|                     *SSC on the basis of the best available scientific information*
+|            $ABC \le 0.75 \times OFL$
+
+<br>
+<u>Overfished or approaching an overfished condition</u> is determined for all age-structured stock assessments by comparison of the stock level in relation to its MSY level according to the following two harvest scenarios (Note for Tier 3 stocks, the MSY level is defined as $B_{35\%}$): 
+
+Overfished (listed in each assessment as projection scenario 6):  
+
+> In all future years, $F$ is set equal to $F_{OFL}$.
+> (Rationale: This scenario determines whether a stock is overfished. 
+> If the stock is expected to be 1) above its MSY level in `r year` or 2) above ½ of its MSY level in `r year` and above its MSY level in `r year + 10` under this scenario, then the stock is not overfished.)
+
+Approaching an overfished condition (listed in each assessment as scenario 7): 
+
+> In `r year+1`, $F$ is set equal to $max F_{ABC}$, and in all subsequent years, *F* is set equal to \$F\_{OFL}.
+> (Rationale: This scenario determines whether a stock is approaching an overfished condition. 
+> If the stock is 1) above its MSY level in `r year+2` or 2) above 1/2 of its MSY level in `r year+2` and expected to be above its MSY level in `r year+12` under this scenario, then the stock is not approaching an overfished condition.) 
+
+For stocks in Tiers 4-6, no determination can be made of overfished status or approaching an overfished condition as information is insufficient to estimate the MSY stock level.
+
+## Overview of Stock Assessments
+
+The status of individual groundfish stocks managed under the FMP is summarized in this section.
+The spawning biomass estimates of pollock, sablefish, Dover sole, flathead sole, rex sole, northern and southern rock sole, arrowtooth flounder, Pacific ocean perch, rougheye and blackspotted rockfish, northern rockfish, and dusky rockfish are above target stock size (Fig. 2).
+The spawning biomass of Pacific cod is below the proxy for BMSY.
+The target biomass levels for deepwater flatfish (excluding Dover sole), shallow-water flatfish (excluding northern and southern rock sole), shortraker rockfish, other rockfish, demersal shelf rockfish, thornyhead rockfish, Atka mackerel, skates, octopus, and sharks are unknown.

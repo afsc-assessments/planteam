@@ -1,0 +1,51 @@
+## 13. Rougheye and blackspotted rockfish  
+Status and catch specifications (t) of the blackspotted and rougheye rockfish complex in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+
+```{r}
+spp = c("blackspotted/rougheye rockfish", "rebs")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  dplyr::mutate(area = case_when(area=="EBS/EAI" ~ "Eastern Bering Sea/Eastern AI",
+                                  area=="CAI/WAI" ~ "Western/Central Aleutian Islands",
+                                  TRUE ~ area),
+                 area = factor(area,
+                              levels = c("BSAI", "Western/Central Aleutian Islands", "Eastern Bering Sea/Eastern AI"))) %>%
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2) %>% 
+  flextable::hline(i=c(4,8))
+```
+
+*Changes from the previous assessment*  
+This assessment was changed to a biennial cycle beginning with the 2014 assessment; this is a partial
+assessment year. Changes to the input data include catch data being updated for 2020 and revisions to the
+2021 and 2022 catch estimates. There were no changes to the assessment methodology.
+
+*Spawning biomass and stock trends*  
+Spawning biomass for AI blackspotted and rougheye rockfish in 2022 is projected to be 3,468 t and is
+projected to increase slightly in 2023. 
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The stock assessment is separated into AI and EBS. For the AI, this stock qualifies for management under
+Tier 3 due to the availability of estimates for B40%, F40%, and F35%. Because the projected female spawning biomass for 2022 of 3,468 t is less than B40% (3,524 t), the stock qualifies as Tier 3b but is projected to slightly exceed B40% in 2023 (3,568 t). For the EBS, this stock is managed under Tier 5 with a projected biomass for both 2022 and 2023 of 1,371 t.
+
+The authors and Team recommend an overall 2022 ABC of 503 t and a 2022 OFL of 598 t. The
+apportionment of the 2022 ABC to subareas is 177 t for the Western and Central AI and 326 t for the Eastern AI and EBS
+
+*Status determination*  
+The BSAI blackspotted and rougheye stock complex is not being subjected to overfishing. For the AI
+region, the blackspotted and rougheye rockfish complex is not overfished, and is not approaching an
+overfished condition. It is not possible to determine whether the complex in the EBS region is overfished
+or whether it is approaching an overfished condition because it is managed under Tier 5.
+
+
+*Area apportionment*  
+Ongoing concerns about fishing pressure relative to biomass in the Western Aleutians have been noted by
+the Team. The maximum subarea species catch (MSSC) levels within the WAI/CAI, based on the random
+effects model, are as follow:
+
+

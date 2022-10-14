@@ -1,0 +1,44 @@
+## 14. Alaska plaice  
+Status and catch specifications (t) of Alaska plaice in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r}
+spp = c("alaska plaice", "plaice")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
+*Changes from the previous assessment*  
+In accordance with the approved schedule, a full assessment was conducted for Alaska plaice this year.
+Changes to the input data included updated catch data through 2020, estimated catch for 2021, projected
+catches for 2022-2023, 2021 EBS trawl survey biomass estimates and standard errors (no survey in 2020
+due to COVID-19), 2019 survey ages (no otoliths collected in 2020 due to no survey), and 2019 and 2020
+fishery length compositions. There were no changes to the assessment methodology.
+
+*Spawning biomass and stock trends*  
+The survey biomass estimate for 2021 (333,830 t) was 9% lower than the 2019 estimate and is the lowest
+value in the survey time series. Similarly, model estimates of female spawning biomass (158,090 t in 2021)
+continued their decline since 2013. In contrast, model estimates of total biomass (455,187 t in 2021) show
+an increasing trend since 2019. These results are likely due to estimates of relatively strong recruitment
+since 2017, a pattern which began to emerge in the 2019 assessment. The Alaska plaice stock is projected
+to remain above the B35% level of female spawning biomass while declining over the next several years.
+Alaska plaice continue to be found in high abundance in the NBS and the 2021 NBS estimate (344,578 t)
+exceeded the EBS estimate for the first time.
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+Reliable estimates of B40%, F40%, and F35% exist for this stock, therefore qualifying it for management under
+Tier 3. The current estimates are B40% = 114,635 t, F40% = 0.140, and F35% = 0.170. Given that the projected
+2022 spawning biomass of 141,838 t exceeds B40%, the ABC and OFL recommendations for 2022 were
+calculated under sub-tier “a” of Tier 3. Projected harvesting at the F40% level gives a 2022 ABC of 32,697 t
+and a 2023 ABC of 32,998 t. The recommended Tier 3a OFLs are 39,305 t and 39,685 t for 2022 and 2023,
+respectively.
+
+*Status determination*  
+Alaska plaice is not being subjected to overfishing, is not overfished, and is not approaching an overfished condition.
+
+

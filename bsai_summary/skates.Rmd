@@ -1,0 +1,53 @@
+## 18. Skates  
+Status and catch specifications (t) of skates in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r}
+spp = c("skates", "skate")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
+*Changes from the previous assessment*  
+This assessment was changed to a biennial cycle beginning with the 2014 assessment; this is a partial
+assessment year.
+
+The following new data were included in this year’s assessment:
+1. Catch data have been updated through October 17, 2021. The 2020 catch data used in the projection
+model have been updated, and new estimates of 2021 and 2022 catches were created for use in the
+projection model.
+2. Survey biomass estimates from the 2021 eastern Bering Sea (EBS) shelf bottom trawl survey were
+reported for informational purposes, but the assessment model was not re-run.
+There were no changes to the assessment methodology. The projection model for harvest recommendations
+was re-run with updated catch data.
+
+
+*Spawning biomass and stock trends*  
+Last year’s assessment estimated that recruitment of Alaska skate was above average for all but two cohorts spawned between 1995 and 2011, but has been below average for all cohorts spawned since 2012. Spawning biomass of Alaska skate increased continuously from 2006 (198,418 t) through 2020 (284,268 t), and in 2020 was at an all-time high for the post-1976 environmental regime. With lower recent recruitment,
+spawning biomass is expected to decrease in the future. The biomass of Other Skates on the EBS shelf is
+declining, but is still above the long-term mean. 
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+Since 2011, the Alaska skate portions of the ABC and OFL have been specified under Tier 3, while the
+“other skates” portions have been specified under Tier 5.
+Because projected spawning biomass for 2022 (121,575 t) exceeds B40% (71,370 t), Alaska skates are
+managed in sub-tier “a” of Tier 3. Other reference points are maxFABC = F40% = 0.079 and FOFL = F35% =
+0.092. The Alaska skate portions of the 2022 and 2023 ABCs are 31,920 t and 30,786 t, respectively, and
+the Alaska skate portions of the 2022 and 2023 OFLs are 37,073 t and 35,758 t. The “other skates”
+component is assessed under Tier 5, based on a natural mortality rate of 0.10 and a biomass estimated using
+the random effects model. The “other skates” portion of the 2022 and 2023 ABCs is 8,038 t for both years
+and the “other skates” portion of the 2022 and 2023 OFLs is 10,717 t for both years.
+For the skate complex as a whole, ABCs for 2022 and 2023 total 39,958 t and 38,824 t, respectively, and
+OFLs for 2022 and 2023 total 47,790 t and 46,475 t, respectively.
+
+
+*Status determination*  
+Alaska skate, which may be viewed as an indicator stock for the complex, is not overfished and is not
+approaching an overfished condition. The skate complex is not being subjected to overfishing.
+
+

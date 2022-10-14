@@ -1,0 +1,39 @@
+## 12. Other flatfish complex  
+Status and catch specifications (t) of the other flatfish complex in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r}
+spp = c("other flatfish", "oflat")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
+*Changes from the previous assessment*  
+This stock is managed on a four-year cycle and 2021 was an off year. Therefore there was no update to
+this assessment. 
+The last full assessment was in 2020 and the next full assessment is scheduled for 2024.
+
+*Spawning biomass and stock trends*  
+EBS shelf survey biomass estimates for this complex were all below 100,000 t from 1983-2003, and reached
+a high of 150,480 t in 2006. This is a not-targeted species complex and in 2019 approximately 23% of the
+ABC was caught. The random effects model estimates indicate that the other flatfish species group is at a
+high level relative to the time series average and is lightly exploited.
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The SSC has classified other flatfish as a Tier 5 species complex with harvest recommendations calculated
+from estimates of biomass and natural mortality. Natural mortality rates for rex (0.17) and Dover sole
+(0.085) borrowed from the Gulf of Alaska are used, along with a value of 0.15 for all other species in the
+complex. The resultant 2022 OFL and ABC are 22,919 t and 17,189 t respectively. 
+
+*Status determination*  
+This assemblage is not being subjected to overfishing. It is not possible to determine whether this
+assemblage is overfished or whether it is approaching an overfished condition because it is managed under
+Tier 5.
+
+
+

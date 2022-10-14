@@ -1,0 +1,47 @@
+## 6. Kamchatka flounder  
+Status and catch specifications (t) of Kamchatka flounder in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r}
+spp = c("kamchatka flounder", "kamchatka")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
+*Changes from the previous assessment*  
+In accordance with the approved schedule, this is an off-year for Kamchatka flounder and a partial
+assessment was conducted. A full stock assessment will be conducted in 2022. No changes were made to
+the assessment model methodology or inputs.
+Changes to the projection data include:
+1. The 2020 catch was reduced to 7,422 t from 7,427 t.
+2. The 2021 catch input used in the projection model was set equal to 6,770 t. The 2021 catch was
+estimated by expanding the catch as of October 8th by a factor of 1.0493. This expansion factor
+represents the average proportion of catch after October 8th between 2016 and 2020.
+3. The 2021 catch estimate was also used as the catch value for 2022 and 2023.
+
+
+*Spawning biomass and stock trends*  
+The projected 2022 female spawning biomass is 55,701 t, above the B40% level of 40,550 t (which remained
+constant), and spawning biomass is projected to remain above B40% for the foreseeable future. Last year’s
+assessment noted that the early shelf survey size composition data suggest that some significant recruitment
+events (assessed at age 2) occurred prior to 1991. Since 1991, the preferred assessment model (16.0b)
+estimates that the 2001, 2002, 2008, and 2014 year classes are all at least 80% above average. Female
+spawning biomass has been increasing since 2015. 
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+This stock was managed under Tier 3 for the first time in 2014. As noted above, projected spawning biomass
+for 2022 is above B40%, placing Kamchatka flounder in sub-tier “a” of Tier 3. For the 2022 fishery, the
+authors and Team recommend setting 2022 ABC at the maximum permissible value of 9,214 t from the
+projection model. This value is an increase of 2.6% from the 2021 ABC currently specified (8,982 t). The
+recommended 2022 OFL is 10,903 t, also a 2.6% increase from the 10,630 t currently specified for 2021
+
+*Status determination*  
+Kamchatka flounder is not being subjected to overfishing, is not overfished, and is not approaching an
+overfished condition
+
+

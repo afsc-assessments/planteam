@@ -1,0 +1,54 @@
+## 5. Greenland turbot
+
+Status and catch specifications (t) of Greenland turbot in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+*Changes from the previous assessment*  
+In accordance with the approved schedule, a partial assessment was conducted for Greenland Turbot this
+year. However, a full stock assessment will be conducted in 2022. The full assessment model was not rerun
+but instead a Tier 3 projection model was run to estimate the stock level in future years using updated 2020
+catch, estimated 2021 catch, and assumed future catches. This incorporates the most current catch
+information without re-estimating model parameters and biological reference points. The Tier 3 projection
+operates outside the full assessment model by projecting estimates of future female spawning biomass, age
+1+ total biomass, ABC, and OFL from the full model estimate of 2020 numbers-at-age and weight-at-age.
+Catch projections for 2021 in the previous assessment were assumed to be at ABC levels, whereas this
+year’s partial assessment used actual 2021 catches, which were much lower than ABC. Please refer to last
+year’s stock assessment for details regarding the rolled-over estimates.
+
+*Spawning biomass and stock trends*  
+The projected 2022 female spawning biomass is 50,361 t, which is a 7% increase from last year’s 2022
+projection of 47,197 t. This increase is due to using actual catches from 2021 in the partial assessment,
+rather than assuming catch to be equal to ABC in 2021, which is higher than actual catch. Exploitation
+rates are generally low (less than 5% since 2017) and catches are generally well below TACs (~55% of
+TAC between 2016 and 2020). Female spawning biomass is projected to decrease slightly to 47,376 t in
+2023. The previous assessment (2020) indicated that the 2007-2009 recruitment classes appear to be fully
+integrated into the fishery, and overall the stock is continuing its downward trend from the last several
+years. The 2021 survey showed a 33% reduction in survey biomass from the 2019 survey. 
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The B40% value, using the mean recruitment estimated for the period 1978-2018 is 35,622 t. The projected
+2022 female spawning biomass of 50,361 t is well above the estimate of B40%. Because the projected
+spawning biomass in year 2021 is above B40%, Greenland turbot ABC and OFL levels will be determined
+under Tier 3a of Amendment 56. The OFLs for 2022 and 2023 are 7,687 t and 6,698 t respectively, and
+the corresponding maximum permissible ABCs are 6,572 t and 5,724 t, respectively. Last year’s
+assessment noted ecosystem-related concerns for future recruitment given recent warming in the Bering
+Sea and shrinking of the cold pool, but no reduction from maxABC was recommended. This year, the
+author again recommended setting ABC at the maximum permissible values for 2022 and 2023, and the
+Team approved this recommendation. 
+
+*Status determination*  
+Greenland turbot is not being subjected to overfishing, is not overfished, and is not approaching an
+overfished condition.
+
+*Area apportionment*  
+The authors and Team recommend that apportionment of ABC between the EBS and the Aleutian Islands
+be based on the assumption that 15.7% of the biomass is in the Aleutian Islands. This is documented in
+the 2018 and 2020 assessments, and as in previous assessments, is based on unweighted averages of EBS
+slope and AI survey biomass estimates from the four most recent years in which both areas were
+surveyed. The Team’s recommended 2022 and 2023 ABCs in the EBS are 5,540 t and 4,825 t. The 2022
+and 2023 ABCs for the AI are 1,032 t and 899 t. As in previous years, area apportionment of the OFL is
+not recommended.
+
+
+
