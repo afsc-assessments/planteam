@@ -37,3 +37,7 @@ the “From Template” find the one that is called `goa_summary`, or `bsai_summ
 ```{r, echo=F}
 knitr::include_graphics(here::here('man', 'figures', 'README-template.PNG'))
 ```
+
+Go to either the `bsai_summary.Rmd` or `goa_summary.Rmd` file and press the `knit` button in Rstudio.
+The specs data will be stored in the data folder, you will need both the September and Novemeber tables. 
+Additionally authors will need to fill in the biomass spreadsheet.

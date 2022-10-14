@@ -29,3 +29,8 @@ links won’t work otherwise* - and the suite of .Rmd files will be placed
 in the folder.
 
 <img src="man/figures/README-template.PNG" width="100%" />
+
+Go to either the `bsai_summary.Rmd` or `goa_summary.Rmd` file and press
+the `knit` button in Rstudio. The specs data will be stored in the data
+folder, you will need both the September and Novemeber tables.
+Additionally authors will need to fill in the biomass spreadsheet.
