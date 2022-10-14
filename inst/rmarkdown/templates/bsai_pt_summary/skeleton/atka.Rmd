@@ -1,13 +1,41 @@
-## 17. Atka mackerel
+## 17. Atka mackerel  
+Status and catch specifications (t) of northern rockfish in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
 
-*Changes from the previous assessment*
+*Changes from the previous assessment*  
+The following new data were included in this year’s assessment:
+1. The 2020 catch estimate was updated and estimated total catch for 2021 was set equal to the TAC
+(62,257 t).
+2. Estimated 2022 and 2023 catches are 66,740 t and 61,320 t, respectively.
+3. The 2020 fishery age composition data were added.
 
-*Spawning biomass and stock trends*
+There were no changes to the assessment methodology
 
-*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+*Spawning biomass and stock trends*  
+Spawning biomass in 2005 was at the highest level since 1982, after which it decreased almost continuously
+through 2020 with a slight uptick in 2021, but continued decline projected for 2022 and 2023 (the estimated
+spawning biomass in 2022 is projected to be roughly 40% of what it was in 2005). Total biomass follows a
+similar decreasing trend. The 1999-2001 year classes were all very strong, and the 2006, 2007, and 2012
+year classes were 52%, 30%, and 59% above the post-1977 average. The projected female spawning
+biomass for 2022 (109,360 t) is projected to be below B40% (111,470 t), and the stock is projected to remain
+below B40% through 2027.
 
-*Status determination*
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The projected female spawning biomass under the recommended harvest strategy is estimated to be below
+B40%, thereby placing BSAI Atka mackerel in Tier 3b. The projected 2022 yield (ABC) at F40%adj = 0.54 is
+78,510 t, up 7% from the 2021 ABC and up 15% from last year’s projected ABC for 2022. The projected
+2022 overfishing level at F35% = 0.65 is 91,870 t, up 7% from the 2021 OFL and up 15% from last year’s
+projected OFL for 2022.
 
-*Area apportionment*
+*Status determination*  
+Atka mackerel is not being subjected to overfishing, is not overfished, and is not approaching an overfished
+condition
+
+*Area apportionment*  
+A four-survey weighted averaging method was used to apportion ABC among areas. The recommended
+ABC apportionments by subarea for 2022 are 27,260 t for Area 541 and the EBS region (a 5.8% increase
+from 2020), 16,880 t for Area 542 (a 9.3% increase from 2021), and 34,370 t for Area 543 (a 6.1% increase
+from 2020).
 
 

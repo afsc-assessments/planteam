@@ -1,13 +1,36 @@
 ## 7. Arrowtooth flounder
 
-*Changes from the previous assessment*
+Status and catch specifications (t) of arrowtooth flounder in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
 
-*Spawning biomass and stock trends*
+*Changes from the previous assessment*  
+In accordance with the approved schedule, this is an off-year for arrowtooth flounder and a partial
+assessment was conducted. A full stock assessment will be conducted in 2022. There were no changes in
+the assessment methodology. Changes in the input data include:
+1. Updated 2020 catch estimate of 10,681 t.
+2. Estimates of catch through October 30, 2021 of 8,698 t.
+3. To estimate future catches, the “yield ratio” (the average of the catch/ABC ratio from 2016-2020)
+was updated to 0.13, which was then multiplied by the future ABCs.
 
-*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+*Spawning biomass and stock trends*  
+The projected age 1+ total biomass for 2022 is 921,690 t, which is roughly the same as the 921,074 t
+projected for 2022 in last year’s assessment. The projected female spawning biomass for 2022 is 509,672
+t, which is a slight increase from last year’s 2022 estimate of 509,208 t. Overall stock trends remain fairly
+stable.
 
-*Status determination*
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The SSC has determined that reliable estimates of B40%, F40%, and F35% exist for this stock. Arrowtooth
+flounder therefore qualifies for management under Tier 3. The point estimates of B40% and F40% from this
+year’s assessment are 223,530 t and 0.135. The projected 2022 spawning biomass is well above B40%, so
+ABC and OFL recommendations for 2022 were calculated under sub-tier “a” of Tier 3. The authors
+recommend setting FABC at the F40% level, which is the maximum permissible level under Tier 3a, resulting
+in 2022 and 2023 ABCs of 80,389 t and 83,389 t, respectively. Projected harvesting at F35% (0.160) gives
+2022 and 2023 OFLs of 94,445 t and 97,944 t respectively. 
 
-*Area apportionment*
+*Status determination*  
+Arrowtooth flounder is a lightly exploited stock in the BSAI. Arrowtooth flounder is not being subjected
+to overfishing, is not overfished, and is not approaching an overfished condition.
+
 
 
