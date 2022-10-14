@@ -3,6 +3,36 @@ Status and catch specifications (t) of Pacific ocean perch in recent years.
 Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
 Catch data are current through `r catch_data_date`.
 
+```{r}
+spp = c("pacific ocean perch", "pop")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+bio %>% 
+    dplyr::filter(stock %in% spp) %>% 
+    dplyr::rename(!!planteam::nameit(.) := biomass) %>% 
+    dplyr::select(-type, -stock) %>% 
+    left_join(specs2, .) %>% 
+      dplyr::mutate(area = case_when(area=="BS" ~ "Eastern Bering Sea",
+                                    area=="EAI" ~ "Eastern Aleutian Islands",
+                                    area=="CAI" ~ "Central Aleutian Islands",
+                                    area=="WAI" ~ "Western Aleutian Islands",
+                                    TRUE ~ area),
+                    area = factor(area, levels = c("BSAI", "Eastern Bering Sea", "Eastern Aleutian Islands", "Central Aleutian Islands", "Western Aleutian Islands"))) %>% 
+    dplyr::select(Area, Year = year, dplyr::contains("biomass"),
+                  OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>%
+    dplyr::arrange(Area) %>%
+    flextable::flextable() %>% 
+    flextable::merge_v(j=1) %>% 
+    flextable::colformat_num(j=2, big.mark = "") %>% 
+    flextable::hline(i=c(4,8,12,16)) %>% 
+    flextable::align(j=1, part="all") %>% 
+    flextable::valign(valign="bottom", part="header") %>% 
+    flextable::fix_border_issues()
+```
+
 *Changes from the previous assessment*  
 In accordance with the approved schedule, a partial assessment was conducted for Pacific ocean perch
 this year. In a partial assessment year, the full assessment model is not rerun but instead a Tier 3

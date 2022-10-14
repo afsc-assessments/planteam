@@ -6,6 +6,36 @@ The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan 
 Beginning in the 2020 fishery year, the OFL was made Alaska-wide (i.e., for both BSAI and GOA FMPs combined). 
 Catch data are current through `r catch_data_date`.
 
+```{r}
+spp = c("sablefish")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+bio %>%
+    dplyr::filter(stock %in% spp) %>%
+    dplyr::rename(!!nameit(.) := biomass) %>%
+    dplyr::select(-type, -stock) %>%
+    left_join(specs2, .) %>%
+    dplyr::mutate(Area = case_when(area=="BS" ~ "Bering Sea",
+                                  area=="AI" ~ "Aleutian Islands",
+                                  TRUE ~ area),
+                 Area = factor(Area,
+                              levels = c("BSAI/GOA", "Bering Sea", "Aleutian Islands"))) %>%
+    dplyr::select(Area, Year = year, dplyr::contains("biomass"),
+                  OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>%
+    # dplyr::arrange(dplyr::desc(Area)) %>%
+    flextable::flextable() %>%
+    flextable::merge_v(j=1) %>%
+    flextable::colformat_num(j=2, big.mark = "") %>%
+    # flextable::hline(i=c(4,8)) %>%
+    flextable::align(j=1, part="all") %>%
+    flextable::valign(valign="bottom", part="header") %>%
+    flextable::fix_border_issues() %>% 
+  flextable::hline(i=c(4,8)) 
+
+```
 
 *Changes from the previous assessment*  
 New data in the assessment model included relative abundance and length data from the 2021 longline

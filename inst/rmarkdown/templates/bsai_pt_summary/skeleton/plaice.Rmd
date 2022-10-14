@@ -3,6 +3,16 @@ Status and catch specifications (t) of Alaska plaice in recent years.
 Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
 Catch data are current through `r catch_data_date`.
 
+```{r}
+spp = c("alaska plaice", "plaice")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
 *Changes from the previous assessment*  
 In accordance with the approved schedule, a full assessment was conducted for Alaska plaice this year.
 Changes to the input data included updated catch data through 2020, estimated catch for 2021, projected

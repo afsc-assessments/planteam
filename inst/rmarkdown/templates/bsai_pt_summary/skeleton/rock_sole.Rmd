@@ -4,6 +4,16 @@ Status and catch specifications (t) of northern rock sole in recent years.
 Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
 Catch data are current through `r catch_data_date`.
 
+```{r}
+spp = c("northern rock sole", "rock_sole")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
 *Changes from the previous assessment*  
 In accordance with the approved schedule, a partial assessment was conducted for northern rock sole this
 year. However, a full stock assessment will be conducted in 2022. The full assessment model was not rerun

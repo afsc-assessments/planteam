@@ -44,12 +44,12 @@ sum_tbl_bs <- function(spp, biomass, spec) {
     dplyr::rename(!!nameit(.) := biomass) %>%
     dplyr::select(-type, -stock) %>%
     left_join(specs, .) %>%
-    dplyr::select(Year = year, Area = area, dplyr::contains("biomass"),
+    dplyr::select(Area = area, Year = year, dplyr::contains("biomass"),
                   OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>%
     # dplyr::arrange(dplyr::desc(Area)) %>%
     flextable::flextable() %>%
-    flextable::merge_v(j=2) %>%
-    flextable::colformat_num(j=1, big.mark = "") %>%
+    flextable::merge_v(j=1) %>%
+    flextable::colformat_num(j=2, big.mark = "") %>%
     # flextable::hline(i=c(4,8)) %>%
     flextable::align(j=1, part="all") %>%
     flextable::valign(valign="bottom", part="header") %>%

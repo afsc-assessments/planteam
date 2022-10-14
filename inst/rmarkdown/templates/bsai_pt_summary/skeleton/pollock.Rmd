@@ -14,25 +14,23 @@ spp = "pollock"
 
 specs %>% 
   dplyr::filter(stock %in% spp) %>% 
-  group_by(area, year, measure) %>% 
-  summarise(value = round(mean(value, na.rm = T))) %>% 
-      dplyr::mutate(area = case_when(area=="EBS" ~ "Eastern Bering Sea",
-                                    area=="AI" ~ "Aleutian Islands",
-                                    TRUE ~ area),
-                    area = factor(area, levels = c("Eastern Bering Sea", "Aleutian Islands", "Bogoslof"))) %>% 
-  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+    tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
   
  bio %>% 
     dplyr::filter(stock %in% spp) %>% 
     dplyr::rename(!!planteam::nameit(.) := biomass) %>% 
     dplyr::select(-type, -stock) %>% 
     left_join(specs2, .) %>% 
-    dplyr::select(Area = area, Year = year, dplyr::contains("biomass"), 
-                  OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>% 
+      dplyr::mutate(area = case_when(area=="EBS" ~ "Eastern Bering Sea",
+                                    area=="AI" ~ "Aleutian Islands",
+                                    TRUE ~ area),
+                    area = factor(area, levels = c("Eastern Bering Sea", "Aleutian Islands", "Bogoslof"))) %>% 
+    dplyr::select(Area, Year = year, dplyr::contains("biomass"),
+                  OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>%
     dplyr::arrange(Area) %>%
     flextable::flextable() %>% 
-    flextable::merge_v(j=1) %>% 
-    flextable::colformat_num(j=2, big.mark = "") %>% 
+    flextable::merge_v(j=1) %>%
+    flextable::colformat_num(j=2, big.mark = "") %>%
     flextable::hline(i=c(4,8)) %>% 
     flextable::align(j=1, part="all") %>% 
     flextable::valign(valign="bottom", part="header") %>% 

@@ -3,6 +3,23 @@ Status and catch specifications (t) of the other rockfish complex in recent year
 Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
 Catch data are current through `r catch_data_date`.
 
+
+```{r}
+spp = c("other rockfish", "orox")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  dplyr::mutate(area = case_when(area=="BS" ~ "Eastern Bering Sea",
+                                  area=="AI" ~ "Aleutian Islands",
+                                  TRUE ~ area),
+                 area = factor(area, 
+                              levels = c("BSAI", "Eastern Bering Sea", "Aleutian Islands"))) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2) %>% 
+  flextable::hline(i=c(4,8))
+```
+
 *Changes from the previous assessment*  
 A full stock assessment was conducted this year.
 Changes to the input data:

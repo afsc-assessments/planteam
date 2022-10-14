@@ -3,6 +3,23 @@ Status and catch specifications (t) of the blackspotted and rougheye rockfish co
 Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
 Catch data are current through `r catch_data_date`.
 
+
+```{r}
+spp = c("blackspotted/rougheye rockfish", "rebs")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  dplyr::mutate(area = case_when(area=="EBS/EAI" ~ "Eastern Bering Sea/Eastern AI",
+                                  area=="CAI/WAI" ~ "Western/Central Aleutian Islands",
+                                  TRUE ~ area),
+                 area = factor(area,
+                              levels = c("BSAI", "Western/Central Aleutian Islands", "Eastern Bering Sea/Eastern AI"))) %>%
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2) %>% 
+  flextable::hline(i=c(4,8))
+```
+
 *Changes from the previous assessment*  
 This assessment was changed to a biennial cycle beginning with the 2014 assessment; this is a partial
 assessment year. Changes to the input data include catch data being updated for 2020 and revisions to the

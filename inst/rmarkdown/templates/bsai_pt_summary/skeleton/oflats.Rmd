@@ -3,6 +3,16 @@ Status and catch specifications (t) of the other flatfish complex in recent year
 Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
 Catch data are current through `r catch_data_date`.
 
+```{r}
+spp = c("other flatfish", "oflat")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  
+sum_tbl_bs(spp, bio, specs2)
+```
+
 *Changes from the previous assessment*  
 This stock is managed on a four-year cycle and 2021 was an off year. Therefore there was no update to
 this assessment. 

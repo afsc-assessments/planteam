@@ -3,6 +3,25 @@ Status and catch specifications (t) of northern rockfish in recent years.
 Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
 Catch data are current through `r catch_data_date`.
 
+```{r}
+spp = c("atka mackerel", "atka")
+
+specs %>% 
+  dplyr::filter(stock %in% spp) %>% 
+   dplyr::mutate(area = case_when(area=="EAI/BS" ~ "E Aleutian Islands/EBS",
+                                  area=="CAI" ~ "Central Aleutian Islands",
+                                  area=="WAI" ~ "Western Aleutian Islands",
+                                  TRUE ~ area),
+                 area = factor(area, 
+                              levels = c("BSAI", "E Aleutian Islands/EBS",  
+                                         "Central Aleutian Islands", "Western Aleutian Islands"))) %>% 
+  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+
+sum_tbl_bs(spp, bio, specs2) %>% 
+  flextable::hline(i=c(4,8, 12))
+
+```
+
 *Changes from the previous assessment*  
 The following new data were included in this year’s assessment:
 1. The 2020 catch estimate was updated and estimated total catch for 2021 was set equal to the TAC
