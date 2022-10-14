@@ -1,13 +1,37 @@
-## 16. Other rockfish
+## 16. Other rockfish  
+Status and catch specifications (t) of the other rockfish complex in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
 
-*Changes from the previous assessment*
+*Changes from the previous assessment*  
+A full stock assessment was conducted this year.
+Changes to the input data:
+1. Catch and fishery lengths updated through October 13, 2020.
+2. The only new survey biomass for this assessment is a zero biomass observation for non-SST
+species in the 2019 Eastern Bering Sea (EBS) shelf survey. The 2020 AI and EBS shelf
+surveys were canceled due to Covid-19, and there has been no EBS slope survey since 2016.
+3. Following guidance from the Resource Assessment and Conservation Engineering Division
+(RACE) division, survey biomass inputs to the random effects (RE) model were limited to:
+AI (1991-present), EBS shelf (1982-present), and EBS slope (2002-present). 
 
-*Spawning biomass and stock trends*
+There were no changes in the assessment methodology. 
 
-*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+*Spawning biomass and stock trends*  
+This is a Tier 5 complex, thus trends in spawning biomass are unknown. The random effects survey biomass
+estimates for shortspine thornyhead (SST) in the Aleutian Islands and EBS slope have been variable. The
+non-SST portion of the complex varies dramatically among surveys, although there was no survey this year.
+Biomass estimates are frequently zero or very small for the non-SST portion of the complex in both the
+eastern Bering Sea slope and shelf surveys.
 
-*Status determination*
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The Team agrees with the approach recommended by the author of setting FABC at the maximum allowable
+under Tier 5 (FABC = 0.75M). The accepted values of M for species in this complex are 0.03 for SST and
+0.09 for all other species. Multiplying these rates by the best biomass estimates of shortspine thornyhead
+and the non-SST portion of the complex yields 2021 and 2022 ABCs of 919 t in the eastern Bering Sea and
+394 t in the Aleutian Islands. The Team recommends that OFL be set for the entire BSAI area, which under
+Tier 5 is calculated by multiplying the best estimates of total biomass for the area by the separate natural
+mortality values and adding the results, yielding an OFL of 1,751 t for 2021 and 2022.
 
-*Area apportionment*
-
-
+*Status determination*  
+The other rockfish complex is not being subjected to overfishing. 
+It is not possible to determine whether this complex is overfished or whether it is approaching an overfished condition because it is managed under Tier 5.

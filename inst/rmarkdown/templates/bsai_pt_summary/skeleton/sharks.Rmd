@@ -1,13 +1,33 @@
-## 19. Sharks
+## 19. Sharks  
+Status and catch specifications (t) of sharks in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
 
-*Changes from the previous assessment*
+*Changes from the previous assessment*  
+This assessment was changed to a biennial cycle beginning with the 2014 assessment; this is a full
+assessment.
+Changes to the input data in this analysis include:
+1. Total catch for BSAI sharks is updated for 2003–2020 (as of Oct 13, 2020).
+2. International Pacific Halibut Commission (IPHC) longline survey relative population numbers
+(RPNs) are updated through 2019.
+3. Biomass estimates have been updated for the Bering Sea shelf trawl survey through 2019 (no
+surveys were conducted in 2020).
+There were no changes in the assessment methodology. 
 
-*Spawning biomass and stock trends*
+*Spawning biomass and stock trends*  
+The main shark species taken in the BSAI fisheries (mainly pollock and Pacific cod) are Pacific sleeper
+sharks and salmon sharks. Beginning around 2000, catch rates of sleeper sharks in both the IPHC longline
+survey and the bycatch fisheries declined steeply for several years, causing possible concern about
+depletion. In 2017, the IPHC RPN showed a slight increase, which was the first increase in a decade. All
+sleeper sharks taken in the survey and fisheries are likely juveniles, so it is impossible to know what effect
+those catches have on spawning stock biomass. Bycatch of salmon sharks has generally increased since
+2010. Recent catch levels have been well below the ABC.
 
-*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
 
-*Status determination*
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*  
+The SSC has placed sharks in Tier 6, where OFL and ABC are typically based on historical catches. The
+OFL is fixed at the maximum catch during 2003–2015 (689 t) and ABC at 75% of OFL, 517 t.
 
-*Area apportionment*
 
-
+*Status determination*  
+The shark complex is not being subjected to overfishing. It is not possible to determine whether this species complex is overfished or whether it is approaching an overfished condition because it is managed under Tier 6.

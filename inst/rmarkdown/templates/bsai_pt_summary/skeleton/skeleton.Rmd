@@ -50,7 +50,7 @@ catch_data_date = "November 6th"
 vroom::vroom(here::here("bsai_summary", "data", "bio.csv")) %>% 
   filter(year >= yr-1) -> bio
 # read in september specs
-readxl::read_xlsx(here::here("bsai_summary", "data", "goa_specs.xlsx"), 
+readxl::read_xlsx(here::here("bsai_summary", "data", "bsai_specs.xlsx"), 
                   sheet="sep",
                   range="A5:F91", 
                   col_names = c("stock", "area", "ofl0", "abc0", "tac0", "catch0"),
@@ -58,7 +58,7 @@ readxl::read_xlsx(here::here("bsai_summary", "data", "goa_specs.xlsx"),
   dplyr::mutate(stock = tolower(stock)) %>% 
   tidyr::fill(stock, .direction = 'down') -> sep_specs 
   
-readxl::read_xlsx(here::here("bsai_summary", "data", "goa_specs.xlsx"), 
+readxl::read_xlsx(here::here("bsai_summary", "data", "bsai_specs.xlsx"), 
                   sheet="nov",
                   range="A5:J91", 
                   col_names = c("stock", "area", "ofl1", "abc1", "tac1", 
