@@ -1,0 +1,29 @@
+## 1. Walleye pollock
+
+
+Status and catch specifications (t) of pollock and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year (age 3+ for W/C/WYAK and survey biomass for SEO). 
+The OFL and ABC for 2022 and 2023 are those recommended by the Plan Team. Catch data were through November 6th, 2021. 
+The GOA-wide and W/C/WYAK ABCs listed in this table are before reductions for the Prince William Sound GHL. 
+However, the federal TACs from earlier years reflect reductions from the ABC due to State waters GHL. 
+State waters GHL was computed as 2.5% of the total W/C/WYAK ABC.
+
+```{r}
+expand.grid(Area = c('west', 'seo', 'goa'), 
+            Year = c(year-1, year, year+1, year+2)) %>% 
+  arrange(Area)
+```
+
+
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+
