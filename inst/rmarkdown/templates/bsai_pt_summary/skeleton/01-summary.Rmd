@@ -5,7 +5,7 @@ editor_options:
 ---
 
 ```{r}
-team = read.csv(here::here("data", "bsai_team.csv"))
+team = read.csv(here::here("bsai_summary", "data", "bsai_team.csv"))
 chair = paste(team %>% 
           filter(chair==1) %>% 
           pull(member) %>% 
