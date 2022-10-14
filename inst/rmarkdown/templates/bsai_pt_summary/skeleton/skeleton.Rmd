@@ -7,6 +7,7 @@ subtitle:  "Compiled by <br> The Plan Team for the Groudfish Fisheries of the Be
 # don't do anything below this line unless you are cool with the consequences
 output:
   bookdown::word_document2:
+     reference_docx: "template.docx"
      toc: false
      number_sections: false
      css: styles.css
@@ -36,6 +37,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 
 # load
 library(dplyr)
 library(planteam)
+library(flextable)
 
 # globals
 yr = year = 2022

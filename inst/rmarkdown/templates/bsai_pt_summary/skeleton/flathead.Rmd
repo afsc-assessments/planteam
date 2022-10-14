@@ -10,7 +10,7 @@ specs %>%
   dplyr::filter(stock %in% spp) %>% 
   tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
   
-sum_tbl(spp, bio, specs2)
+sum_tbl_bs(spp, bio, specs2)
 ```
 
 *Changes from the previous assessment*  

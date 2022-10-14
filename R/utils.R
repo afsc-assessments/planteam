@@ -31,13 +31,13 @@ sum_tbl <- function(spp, biomass, spec) {
 #'
 #' @param spp species
 #' @param biomass biomass data
-#' @param spec specs data
+#' @param specs specs data
 #'
 #' @export sum_tbl_bs
 #'
 #'
 #'
-sum_tbl_bs <- function(spp, biomass, spec) {
+sum_tbl_bs <- function(spp, biomass, specs) {
 
   biomass %>%
     dplyr::filter(stock %in% spp) %>%

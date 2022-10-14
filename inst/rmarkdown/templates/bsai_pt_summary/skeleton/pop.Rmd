@@ -15,12 +15,12 @@ bio %>%
     dplyr::rename(!!planteam::nameit(.) := biomass) %>% 
     dplyr::select(-type, -stock) %>% 
     left_join(specs2, .) %>% 
-      dplyr::mutate(area = case_when(area=="BS" ~ "Eastern Bering Sea",
+      dplyr::mutate(Area = case_when(area=="BS" ~ "Eastern Bering Sea",
                                     area=="EAI" ~ "Eastern Aleutian Islands",
                                     area=="CAI" ~ "Central Aleutian Islands",
                                     area=="WAI" ~ "Western Aleutian Islands",
                                     TRUE ~ area),
-                    area = factor(area, levels = c("BSAI", "Eastern Bering Sea", "Eastern Aleutian Islands", "Central Aleutian Islands", "Western Aleutian Islands"))) %>% 
+                    Area = factor(Area, levels = c("BSAI", "Eastern Bering Sea", "Eastern Aleutian Islands", "Central Aleutian Islands", "Western Aleutian Islands"))) %>% 
     dplyr::select(Area, Year = year, dplyr::contains("biomass"),
                   OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>%
     dplyr::arrange(Area) %>%
