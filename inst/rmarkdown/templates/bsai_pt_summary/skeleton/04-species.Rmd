@@ -9,19 +9,28 @@
 ```{r, child="sablefish.Rmd", eval = T}
 ```
 
-```{r, child="shallow_flats.Rmd", eval = T}
+```{r, child="yellowfin.Rmd", eval = T}
 ```
 
-```{r, child="deep_flats.Rmd", eval = T}
-```
-
-```{r, child="rex.Rmd", eval = T}
+```{r, child="turbot.Rmd", eval = T}
 ```
 
 ```{r, child="arrowtooth.Rmd", eval = T}
 ```
 
+```{r, child="kamchatka.Rmd", eval = T}
+```
+
+```{r, child="rock_sole.Rmd", eval = T}
+```
+
 ```{r, child="flathead.Rmd", eval = T}
+```
+
+```{r, child="plaice.Rmd", eval = T}
+```
+
+```{r, child="oflats.Rmd", eval = T}
 ```
 
 ```{r, child="pop.Rmd", eval = T}
@@ -30,19 +39,10 @@
 ```{r, child="northern_rock.Rmd", eval = T}
 ```
 
-```{r, child="shortraker.Rmd", eval = T}
-```
-
-```{r, child="dusky.Rmd", eval = T}
-```
-
 ```{r, child="rebs.Rmd", eval = T}
 ```
 
-```{r, child="dsr.Rmd", eval = T}
-```
-
-```{r, child="thornyhead.Rmd", eval = T}
+```{r, child="shortraker.Rmd", eval = T}
 ```
 
 ```{r, child="orox.Rmd", eval = T}
