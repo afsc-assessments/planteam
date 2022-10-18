@@ -7,7 +7,7 @@
 #' @export sum_tbl
 #'
 #'
-sum_tbl <- function(spp, biomass, spec) {
+sum_tbl <- function(spp, biomass, specs) {
 
   biomass %>%
     dplyr::filter(stock %in% spp) %>%
