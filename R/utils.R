@@ -12,7 +12,7 @@ sum_tbl <- function(spp, biomass, specs) {
   biomass %>%
     dplyr::filter(stock %in% spp) %>%
     dplyr::rename(!!nameit(.) := biomass) %>%
-    dplyr::select(-type, -stock) %>%
+    dplyr::select(-type, -stock, -area) %>%
     left_join(specs, .) %>%
     dplyr::select(Year = year, dplyr::contains("biomass"),
                   OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>%

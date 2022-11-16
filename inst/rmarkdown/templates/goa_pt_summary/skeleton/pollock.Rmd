@@ -13,17 +13,25 @@ State waters GHL was computed as 2.5% of the total W/C/WYAK ABC.
 ```{r}
 spp = "pollock"
 
-specs %>% 
-  dplyr::filter(stock %in% spp) %>% 
-  dplyr::mutate(area = case_when(area == 'Total' ~ "Goa-wide",
+
+dat %>% 
+    dplyr::filter(stock %in% spp, !(area%in%c("State GHL", "Subtotal"))) %>% 
+    dplyr::mutate(area = case_when(area == 'Total' ~ "Goa-wide",
                                  area %in% c('EYAK/SEO') ~ "SEO",
                                  TRUE ~ "W/C/WYAK")) %>% 
-  group_by(area, year, measure) %>% 
-  summarise(value = round(mean(value, na.rm = T))) %>% 
-  tidyr::pivot_wider(names_from = measure, values_from = value) -> specs2
+  tidyr::pivot_longer(-c(stock, area)) %>% 
+  tidyr::separate(name, c("measure", 'year'), sep = "(?<=[A-Za-z])(?=[0-9])" ) %>% 
+  dplyr::mutate(year = as.numeric(year)-1 + yr) %>% 
+    group_by(area, year, measure) %>% 
+  dplyr::summarise(value = round(sum(value, na.rm = T))) %>% 
+  tidyr::pivot_wider(values_from = value, names_from = measure) -> specs2
+    
   
  bio %>% 
     dplyr::filter(stock %in% spp) %>% 
+   tidyr::pivot_wider(names_from=area, values_from = biomass) %>% 
+    dplyr::mutate("Goa-wide" = SEO +  `W/C/WYAK`) %>% 
+   tidyr::pivot_longer(-c(stock, year, type), values_to = "biomass", names_to = "area") %>% 
     dplyr::rename(!!planteam::nameit(.) := biomass) %>% 
     dplyr::select(-type, -stock) %>% 
     left_join(specs2, .) %>% 
@@ -32,8 +40,8 @@ specs %>%
     dplyr::arrange(dplyr::desc(Area)) %>%
     flextable::flextable() %>% 
     flextable::merge_v(j=1) %>% 
-    flextable::colformat_num(j=1, big.mark = "") %>% 
-    flextable::hline(i=4) %>% 
+    flextable::colformat_num(j=2, big.mark = "") %>% 
+    flextable::hline(i=c(4,8)) %>% 
     flextable::align(j=1, part="all") %>% 
     flextable::valign(valign="bottom", part="header") %>% 
     flextable::fix_border_issues() 
