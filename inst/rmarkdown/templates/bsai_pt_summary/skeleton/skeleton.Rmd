@@ -33,7 +33,7 @@ flextable::set_flextable_defaults(font.family = "Times New Roman",
 # load
 library(planteam)
 
-df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
+df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=133429270",
                                 sheet = "bsai",
                                 col_types = "cccdddddd") 
 ```
