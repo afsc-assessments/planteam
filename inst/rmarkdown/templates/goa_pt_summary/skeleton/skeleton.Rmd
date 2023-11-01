@@ -1,9 +1,5 @@
 ---
-title:
-  "STOCK ASSESSMENT AND FISHERY EVALUATION REPORT FOR THE GROUNDFISH RESOURCES OF THE GULF OF ALASKA"
-  
-subtitle:  "Compiled by <br> The Plan Team for the Groudfish Fisheries of the Gulf of Alaska  <br> ![](goa.png)  <br> with contributions by:  November 22 North Pacific Fishery Management Council 1007 West Third, Suite 400 Anchorage, AK 99501" 
- 
+title: "GOA plan team summary tables"
 
 # don't do anything below this line unless you are cool with the consequences
 output:
@@ -22,69 +18,1201 @@ geometry:
 fig_caption: true
 
 ---
+```{r globals}
+# globals ----
+yr = year = 2023
+meeting_dates = 'November 13-17, 2023'
+catch_data_date = "November 6th, 2023"
+```
 
-```{r setup, include=FALSE, echo = FALSE}
-# remotes::install_github("crsh/rmdfiltr")
+
+```{r setup, include=FALSE, echo = FALSE, warning=F, message=F}
+# setup
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = "!h", out.extra = "")
-```
-
-
-```{r load, warning=F, message=F}
-# load
-library(dplyr)
-library(planteam)
-library(flextable)
-
-# globals
-yr = year = 2022
-meeting_dates = 'November 14-18, 2022'
-catch_data_date = "November 6th"
-```
-
-```{r}
-# read in data 
-# biomass - gonna need to get this from authors
-readxl::read_xlsx(here::here("goa_summary", "data", "goa_specs_2022.xlsx"),
-                  range = "A4:N90",
-                  col_names = c("stock", "area", 
-                                "ofl0", "abc0", "tac0", "catch0",
-                                "ofl1", "abc1", "tac1", "catch1", 
-                                "ofl2", "abc2", 
-                                "ofl3", "abc3"),
-                  col_types = c("text", "text", rep("numeric", 12))) %>% 
-  dplyr::mutate(stock = tolower(stock)) %>% 
-  tidyr::fill(stock, .direction = 'down') -> dat
-  
-dat %>% 
-  tidyr::pivot_longer(-c(stock, area)) %>% 
-  tidyr::separate(name, c("measure", 'year'), sep = "(?<=[A-Za-z])(?=[0-9])" ) %>% 
-  dplyr::mutate(year = as.numeric(year)-1 + yr) -> specs
-
-# create the apportionment data 
-dat %>% 
-  dplyr::select(stock, area, abc2, abc3) %>% 
-  tidyr::pivot_longer(-c(stock, area)) %>% 
-  tidyr::separate(name, c("measure", 'year'), sep = "(?<=[A-Za-z])(?=[0-9])" ) %>% 
-  dplyr::mutate(year = as.numeric(year)-1+yr) %>% 
-  dplyr::select( -measure) %>% 
-  dplyr::filter(area != "Subtotal") -> app
-
-# 
 flextable::set_flextable_defaults(font.family = "Times New Roman",
                                   font.size = 11)
+# load
+library(planteam)
+
+df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
+                                sheet = "goa",
+                                col_types = "cccdddddd") 
 ```
 
-```{r, child="01-summary.Rmd", eval = T}
+## 1. Walleye pollock
+
+Status and catch specifications (t) of pollock and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year (age 3+ for W/C/WYAK and survey biomass for SEO). 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data were through `r catch_data_date`. 
+
+The GOA-wide and W/C/WYAK ABCs listed in this table are before reductions for the Prince William Sound GHL. 
+However, the federal TACs from earlier years reflect reductions from the ABC due to State waters GHL. 
+State waters GHL was computed as 2.5% of the total W/C/WYAK ABC.
+
+```{r pollock}
+spp = "pollock"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                area %in%c("Subtotal", "Total", "EYAK/SEO"),
+                year %in% (yr-1):(yr+2)) %>% 
+  dplyr::mutate(area = dplyr::case_when(area == 'Total' ~ "Goa-wide",
+                                 area %in% 'EYAK/SEO' ~ "SEO",
+                                 TRUE ~ "W/C/WYAK"),
+                catch = dplyr::case_when(area=="SEO" & year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Area = area, Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>% 
+  dplyr::arrange(dplyr::desc(Area)) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::colformat_num(j=2, big.mark = "") %>% 
+  flextable::hline(i=c(4,8)) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::fix_border_issues() 
+
 ```
 
-```{r, child="02-econ.Rmd", eval = T}
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+The Gulf of Alaska `r spp` stock is not being subjected to overfishing and is neither overfished nor approaching an overfished condition.
+
+*Area apportionment*
+
+```{r pollockapp}
+df %>% 
+  dplyr::filter(stock==spp, 
+                !(area %in% c("Subtotal")),
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(-c(stock, biomass, rec_age, ofl, tac, catch)) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, `W (610)`, `C (620)`, `C (630)`, `WYAK`, `EYAK/SEO`) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=6, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header")
 ```
 
-```{r, child="03-ecosystem.Rmd", eval = T}
+## 2. Pacific cod
+
+Status and catch specifications (t) of Pacific cod in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`. 
+
+```{r pcod}
+spp = "pcod"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
 ```
 
-```{r, child="04-species.Rmd", eval = T}
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r pcod-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                !(area %in% c("Subtotal")),
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(-c(stock, biomass, rec_age, ofl, tac, catch)) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C, Eastern = E, Total) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header")
 ```
 
-```{r, child="05-tables.Rmd", eval = T}
+## 3. Sablefish
+
+Status and catch specifications (t) of sablefish in recent years. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+Beginning in 2020, the OFL was specified Alaska-wide (for both BSAI and GOA). 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`. 
+
+```{r sablefish}
+
+# note: if you get 0 catches for AK Total, that's means no values are entered, you must go in manually and update the catches
+spp = "sablefish"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area %in% c("GOA Total", "AK Total")) %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Area=area, Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(dplyr::desc(Area), Year, .by_group = TRUE) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::width(j=1, width=1.5) %>% 
+  flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
+  flextable::fix_border_issues() 
 ```
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r sablefish-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C) %>% 
+  flextable::flextable() -> tbl 
+
+    flextable::font(
+      flextable::footnote(tbl,i=1, j=4:5, part = "header", ref_symbols = "*",
+                          value = flextable::as_paragraph(("95:5 split in the EGOA following the trawl ban in SEO"),
+                          sep = ".")),
+      fontname = "Times New Roman") %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::width(j=6:7, width=1.0)
+
+```
+
+## 4. Shallow-water flatfish
+
+Status and catch specifications (t) of shallow water flatfish and projections for `r year+1` and `r year+2`. 
+The shallow water flatfish (SWF) complex comprises of northern rock sole, southern rock sole, yellowfin sole, butter sole, starry flounder, English sole, sand sole and Alaska plaice. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`. 
+
+```{r shallow-flat}
+spp = "shallow_flat"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r shallow-flat-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=5, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 5. Deep-water flatfish
+
+Status and catch specifications (t) of deepwater flatfish (Dover sole and others) and projections for `r year+1` and `r year+2`. 
+Biomass for each year is for Dover sole only and corresponds to the model estimate associated with the ABC for that year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`. 
+
+```{r deep-flat}
+spp = "deep_flat"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r deep-flat-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=5, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 6. Rex sole
+
+Status and catch specifications (t) of rex sole and projections for `r year+1` and `r year+2`. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`. 
+
+```{r rex}
+spp = "rex"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r rex-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=5, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 7. Arrowtooth flounder
+
+Status and catch specifications (t) of arrowtooth flounder and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year.
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r arrowtooth}
+spp = "arrowtooth"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r arrowtooth-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=5, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+## 8. Flathead sole
+
+Status and catch specifications (t) of flathead sole and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r flathead}
+spp = "flathead"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r flathead-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=5, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 9. Pacific ocean perch
+
+Status and catch specifications (t) of Pacific ocean perch and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r pop}
+spp = "pop"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass),
+                rec_age = ifelse(is.na(rec_age), head(rec_age, 1), rec_age)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r pop-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::mutate(Eastern = WYAK + SEO) -> app
+
+app %>% 
+  dplyr::select(Year=year, Western = W, Central = C, Eastern, Total) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+Amendment 41 prohibited trawling in the Eastern area east of 140$^\circ$ W longitude. 
+The Team and authors consider the biomass in the W. Yakutat area (between 147$^\circ$ W and 140$^\circ$ W) to be fishable, and therefore estimate the proportion of biomass in this sub-region for ABC considerations. 
+The proportion of biomass between the W. Yakutat and E. Yakutat/Southeast areas **is unchanged from the 2021 assessment**, and resulted in the following ABC apportionment of the Eastern Gulf area: 
+
+```{r pop-app2}
+app %>% 
+  dplyr::select(Year=year, WYAK, SEO, Total = Eastern) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+The following table shows the apportionment of OFL between the Western/Central/W. Yakutat and E. Yakutat/Southeast WYK areas:  
+
+```{r pop-app3}
+app %>% 
+  dplyr::select(Year=year, `Western/Central/W.Yakutat` = `W/C/WYAK`, SEO, Total) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::align(j=2, part="all", align="center") %>% 
+  flextable::width(j=2, width=1.25) %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 10. Northern rockfish 
+
+Status and catch specifications (t) of northern rockfish and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r nork}
+spp = "nork"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r nork-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  dplyr::mutate(abc = ifelse(area=="E", 1, abc)) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C, Eastern = E) %>% 
+  flextable::flextable() -> tbl 
+  
+  flextable::font(
+      flextable::footnote(tbl,i=1, j=4, part = "header", ref_symbols = "*",
+                          value = flextable::as_paragraph((" Note that the small northern rockfish ABC apportionments from the Eastern Gulf are combined with the other rockfish complex ABC in the West Yakutat management area for management purposes and are removed here from the Team recommended apportionments and ABC totals for northern rockfish. "),
+                          sep = ".")),
+      fontname = "Times New Roman") %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") 
+    
+```
+
+## 11. Shortraker rockfish
+
+Status and catch specifications (t) of shortraker rockfish and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projections given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r shortraker}
+spp = "shortraker"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r shortraker-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C, Eastern = E) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 12. Dusky rockfish 
+
+Status and catch specifications (t) of dusky rockfish and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projections given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r dusky}
+spp = "dusky"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r dusky-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::mutate(Eastern = WYAK + `EYAK/SEO`) -> app
+
+app %>% 
+  dplyr::select(Year=year, Western = W, Central = C, Eastern, Total) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+Amendment 41 prohibited trawling in the Eastern area east of 140$^\circ$ W longitude. 
+The ratio of biomass still obtainable in the W. Yakutat area (between 147$^\circ$ W and 140$^\circ$ W) is **0.74**. 
+This results in the following apportionment to the W. Yakutat area: 
+
+```{r dusky-app2}
+app %>% 
+  dplyr::select(Year=year, WYAK, `EYAK/SEO`, Total = Eastern) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=3, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 13. Rougheye and blackspotted rockfish
+
+Status and catch specifications (t) of rougheye and blackspotted rockfish and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projections given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r rebs}
+spp = "rebs"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r rebs-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C, Eastern = E) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 14. Demersal shelf rockfish
+
+Status and catch specifications (t) of demersal shelf rockfish and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r dsr}
+spp = "dsr"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+The ABC and OFL for DSR are for the SEO District. 
+DSR management is deferred to the State of Alaska and any further apportionment within the SEO District is at the discretion of the State.
+
+## 15. Thornyhead rockfish
+
+Status and catch specifications (t) of thornyhead rockfish and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r thornyhead}
+spp = "thornyhead"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r thornyhead-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  dplyr::relocate(Year=year, Western = W, Central = C, Eastern = E) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header")
+```
+
+## 16. Other rockfish
+
+Status and catch specifications (t) of other rockfish. 
+Biomass estimates for `r year+1` and `r year+2` are based on the random effects model for Tier 4 and 5 species from the last full assessment. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+*Note that 1 t of northern rockfish has been added for management purposes to the Other rockfish complex in WYAK of the EGOA. 
+Catch data are current through `r catch_data_date`.
+
+```{r orox}
+spp = "orox"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*
+
+```{r orox-app}
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, area, abc) %>% 
+  tidyr::pivot_wider(names_from = area, values_from = abc) %>% 
+  flextable::flextable()  -> tbl 
+  
+  flextable::font(
+      flextable::footnote(tbl,i=1, j=3, part = "header", ref_symbols = "*",
+                          value = flextable::as_paragraph(("Note that the small northern rockfish ABC apportionments from EGOA are combined with OR in the WYAK management area and added for management purposes here from the Plan Team recommended apportionments for OR"),
+                          sep = ".")),
+      fontname = "Times New Roman") %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::width(j=5, width=1.1) %>% 
+  flextable::valign(valign="bottom", part="header") 
+```
+
+## 17. Atka mackerel
+
+Status and catch specifications (t) of Atka mackerel in recent years. 
+Atka mackerel are managed under Tier 6 because reliable estimates of biomass are not available. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r atka}
+spp = "atka"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2),
+                area =="Total") %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::border_remove() %>% 
+  flextable::add_header_row(values = rep("Tier 6", 6)) %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::merge_h(i=1, part="header") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::hline_bottom() %>% 
+  flextable::hline_top() %>% 
+  flextable::align(i=1, part="header", align = "center") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Area apportionment*
+
+Atka mackerel are managed Gulf-wide. 
+
+## 18. Skates 
+
+Status and catch specifications (t) of skates. 
+Biomass for each year corresponds to the projection given in the SAFE report of the last full assessment. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`.
+
+```{r skates}
+spp = c("big_skate", "longnose", "skates")
+
+df %>% 
+  dplyr::filter(stock%in%spp, 
+                year %in% (yr-1):(yr+2),
+                area %in% c("Total", "GOA-wide")) %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass),
+                stock = dplyr::case_when(stock == "big_skate" ~ "Big Skate",
+                                  stock == "longnose" ~ "Longnose Skate",
+                                  stock == "skates" ~ "Other Skates")) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Species = stock, Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Species, Year) %>% 
+  flextable::flextable() %>% 
+  flextable::border_remove() %>% 
+  flextable::add_header_row(values = rep("Tier 5", 7)) %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::merge_h(i=1, part="header") %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::hline_bottom() %>% 
+  flextable::hline_top() %>% 
+  flextable::align(i=1, part="header", align = "center") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
+  flextable::fix_border_issues() 
+```
+
+*Area apportionment*
+Big and longnose skates have area-specific ABCs and Gulf-wide OFLs; other skates have a Gulf-wide ABC and OFL. 
+
+```{r skates-app}
+df %>% 
+  dplyr::filter(stock%in%spp, 
+                year %in% (yr+1):(yr+2)) %>% 
+  dplyr::select(year, stock, area, abc) %>% 
+  tidyr::pivot_wider(names_from=area, values_from = abc) %>% 
+  dplyr::mutate(Total=dplyr::case_when(`GOA-wide`>0 ~ `GOA-wide`, 
+                                        TRUE ~ Total)) %>% 
+  dplyr::select(Year=year, Species = stock, Western = W, Central = C, Eastern = E, Total) %>% 
+  flextable::flextable() %>% 
+  flextable::colformat_num(j=1, big.mark = "") %>% 
+  flextable::merge_v(j=2) %>% 
+  flextable::hline(i = rle(cumsum(.$body$spans$columns[,2]))$values) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::fix_border_issues() 
+
+```
+
+## 19. Sharks
+
+Status and catch specifications (t) of the GOA shark complex and projections for `r year+1` and `r year+2`. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`
+
+```{r sharks}
+spp = "sharks"
+
+df %>% 
+  dplyr::filter(stock==spp,
+                year %in% (yr-1):(yr+2)) %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() -> tbl
+
+  flextable::font(
+        flextable::footnote(tbl,i=1, j=2, part = "header", ref_symbols = "*",
+                            value = flextable::as_paragraph(("Spiny dogfish random effects modelled biomass only"),
+                            sep = ".")),
+        fontname = "Times New Roman") %>% 
+    flextable::colformat_num(j=1, big.mark = "") %>% 
+    flextable::align(j=1, part="all", align="left") %>% 
+    flextable::valign(valign="bottom", part="header") 
+
+```
+
+*Changes from the previous assessment*
+
+*Spawning biomass and stock trends*
+
+*Tier determination/Plan Team discussion and resulting ABCs and OFLs*
+
+*Status determination*
+
+*Area apportionment*  
+GOA sharks are managed Gulf-wide. 
+
+## 20. Octopus
+
+Status and catch specifications (t) of GOA octopus. 
+Biomass for each year corresponds to the projection given in the SAFE report issued in the preceding year. 
+The OFL and ABC for `r year+1` and `r year+2` are those recommended by the Plan Team. 
+Catch data are current through `r catch_data_date`
+
+```{r octopus}
+spp = "octopus"
+
+df %>% 
+  dplyr::filter(stock==spp, 
+                year %in% (yr-1):(yr+2)) %>% 
+  dplyr::mutate(catch = dplyr::case_when(year<=yr & is.na(catch) ~ 0,
+                                  year > yr ~ NA,
+                                  TRUE ~ catch),
+                tac = dplyr::case_when(year>yr ~ NA,
+                                TRUE ~ tac),
+                biomass = dplyr::case_when(year>yr+1 ~ NA,
+                                    TRUE ~ biomass)) %>% 
+  dplyr::rename(!!nameit(.) := biomass) %>% 
+  dplyr::select(Year = year, dplyr::contains("biomass"), 
+                OFL=ofl, ABC=abc, TAC=tac, Catch=catch, -rec_age) %>% 
+  dplyr::arrange(Year) %>% 
+  flextable::flextable() %>% 
+  flextable::merge_v(j=1) %>% 
+  flextable::align(j=1, part="all", align="left") %>% 
+  flextable::valign(valign="bottom", part="header") %>% 
+  flextable::height(height=0.25) %>% 
+  flextable::hrule(rule = "exact") %>% 
+  flextable::fix_border_issues() 
+```
+
+*Area apportionment*
+
+GOA octopus are managed Gulf-wide. 
