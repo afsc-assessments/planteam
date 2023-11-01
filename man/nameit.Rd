@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{nameit}
 \alias{nameit}
-\title{age age plus group to biomass name}
+\title{age plus group to biomass name}
 \usage{
 nameit(data)
 }
@@ -10,5 +10,5 @@ nameit(data)
 \item{data}{input dataframe}
 }
 \description{
-age age plus group to biomass name
+age plus group to biomass name
 }
