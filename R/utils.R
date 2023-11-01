@@ -66,12 +66,20 @@ sum_tbl_bs <- function(spp, biomass, specs) {
 #'
 #' @export nameit
 #'
+# nameit <- function(data) {
+#   if(is.na(unique(data$type))) {
+#     "Biomass"
+#   } else {
+#     paste0("age-", unique(data$type), "+ Biomass")
+#   }
+#
+# }
+
 nameit <- function(data) {
-  if(is.na(unique(data$type))) {
+  if(is.na(mean(data$rec_age[data$year==yr], na.rm=T))) {
     "Biomass"
   } else {
-    paste0("age-", unique(data$type), "+ Biomass")
+    paste0("age-", mean(data$rec_age[data$year==yr], na.rm=T), "+ Biomass")
   }
 
 }
-
