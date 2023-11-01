@@ -16,18 +16,18 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 # install.packages('devtools')
-# install.github('afsc-assessments/planteam)
+# remotes::install.github('afsc-assessments/planteam)
 library(planteam)
 ```
 
 ## Example
 
 Once `planteam` is installed on your machine open a new .Rmd file, click on
-the “From Template” find the one that is called `goa_pt_summary`, or `bsai_pt_summary` name it **goa_pt_summary** or **bsai_pt_summary** - *example links won't work otherwise* - and a couple files will be placed in the folder. 
+the “From Template” find the one that is called `goa_summary`, or `bsai_summary` name it e.g., **goa_summary** or **bsai_summary** - and a couple files will be placed in the named folder. 
 
 ```{r, echo=F}
 knitr::include_graphics(here::here('man', 'figures', 'README-template.PNG'))
 ```
 
-Go to either the `bsai_pt_summary.Rmd` or `goa_pt_summary.Rmd` file and press the `knit` button in Rstudio.
+Go to either the `bsai_summary.Rmd` or `goa_summary.Rmd` file and press the `knit` button in Rstudio.
 The specs data will be stored in the data folder, you will need make sure the data in the [google sheet](https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=1812144961) are accurate. 
