@@ -7,6 +7,8 @@
 #' @export sum_tbl
 #'
 #'
+#'
+#'
 sum_tbl <- function(spp, biomass, specs) {
 
   biomass %>%
