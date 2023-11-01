@@ -79,7 +79,8 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The goal of planteam is to facilitate the development of the annual summary using .Rmd files to produce a word doc - that will likely be hosted on google docs for edits.</p>
+<p>The goal of planteam is to facilitate the development of the annual SAFE summaries using .Rmd files to produce a word doc - that will likely be hosted on google docs for edits. Additionally, this package can be used to generate catch reports (for off-cycle assessments) and the specs tables used by the AKRO. Since all of these products are supposed to be pulling from the same data source this will hopefully eliminate copy &amp; paste errors.</p>
+<p>See the <a href="https://afsc-assessments.github.io/planteam/" class="external-link">planteam webpage articles</a> for more information.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -87,13 +88,6 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"afsc-assessments/planteam"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h2>
-<p>Once <code>planteam</code> is installed on your machine open a new .Rmd file, click on the “From Template” find the one that is called <code>goa_summary</code>, or <code>bsai_summary</code> name it <strong>goa_summary</strong> or <strong>bsai_summary</strong> - <em>example links won’t work otherwise</em> - and the suite of .Rmd files will be placed in the folder.</p>
-<p><img src="reference/figures/README-template.PNG" width="100%"></p>
-<p>Go to either the <code>bsai_summary.Rmd</code> or <code>goa_summary.Rmd</code> file and press the <code>knit</code> button in Rstudio. The specs data will be stored in the data folder, you will need both the September and Novemeber tables. Additionally authors will need to fill in the biomass spreadsheet.</p>
 </div>
 </div>
   </div>

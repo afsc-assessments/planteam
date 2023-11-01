@@ -6,9 +6,17 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of planteam is to facilitate the development of the annual
-summary using .Rmd files to produce a word doc - that will likely be
-hosted on google docs for edits.
+The goal of planteam is to facilitate the development of the annual SAFE
+summaries using .Rmd files to produce a word doc - that will likely be
+hosted on google docs for edits. Additionally, this package can be used
+to generate catch reports (for off-cycle assessments) and the specs
+tables used by the AKRO. Since all of these products are supposed to be
+pulling from the same data source this will hopefully eliminate copy &
+paste errors.
+
+See the [planteam webpage
+articles](https://afsc-assessments.github.io/planteam/) for more
+information.
 
 ## Installation
 
@@ -19,18 +27,3 @@ You can install the development version of planteam from
 # install.packages("devtools")
 devtools::install_github("afsc-assessments/planteam")
 ```
-
-## Example
-
-Once `planteam` is installed on your machine open a new .Rmd file, click
-on the “From Template” find the one that is called `goa_summary`, or
-`bsai_summary` name it **goa_summary** or **bsai_summary** - *example
-links won’t work otherwise* - and the suite of .Rmd files will be placed
-in the folder.
-
-<img src="man/figures/README-template.PNG" width="100%" />
-
-Go to either the `bsai_summary.Rmd` or `goa_summary.Rmd` file and press
-the `knit` button in Rstudio. The specs data will be stored in the data
-folder, you will need both the September and Novemeber tables.
-Additionally authors will need to fill in the biomass spreadsheet.
