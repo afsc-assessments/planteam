@@ -1,0 +1,62 @@
+---
+title: "Catch-reports"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Catch-reports}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = F,
+  message = F
+)
+```
+
+
+To create catch reports first the data in the google sheet need to be up to date https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0
+
+Next open Rstudio, create a Project (name it something like `catch_reports`).  
+I recommend then creating a folder by year `dir.create('2023')`.  
+Install the `planteam` package and load it.
+
+Overall the setup and running will look like:
+
+```{r setup}
+# install.packages("devtools")
+# remotes::install_github("afsc-assessments/planteam")
+library(planteam)
+dir.create("2023")
+
+catch_report(title = "1.B. Assessment of walleye pollock in the Bogoslof Island Region",
+            authors = "James N. Ianelli, S. J. Barbeaux, Ivonne Ortiz, and D. McKelvey",
+            stock = "pollock",
+            area = "Bogoslof",
+            year = 2023,
+            next_full_year = 2024,
+            catch_data_date = "November 5, 2023",
+            output_dir = "2023")
+            
+```
+
+This will generate a report that is placed in the selected output directory, so in this case it would be `2023/2023_Bogoslof_pollock_catch_report.docx`.
+
+Similarly a catch report for BSAI other rockfish would be entered as:
+```{r}
+catch_report(title = "16. Assessment of the Other Rockfish stock complex in the Bering Sea/Aleutian Islands ",
+             authors = "Jane Sullivan, Matt Callahan, Andy Kingham, Todd TenBrink, Ivonne Ortiz, Elizabeth Siddon, and Paul Spencer ",
+             stock = "orox",
+             area = "BSAI",
+             year = 2023,
+             last_full_year = 2022,
+             next_full_year = 2024,
+             catch_data_date = "November 5, 2023",
+             output_dir = "2023")
+```
+
+If you have any problems please document them and post them as an issue on github at: https://github.com/afsc-assessments/planteam/issues
+
+ 
