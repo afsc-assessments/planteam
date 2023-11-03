@@ -22,7 +22,7 @@ author: "`r params$authors`"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
-year = params$year
+
 flextable::set_flextable_defaults(font.family = "Times New Roman",
                                   font.size = 11)
 ```
@@ -39,7 +39,7 @@ Until then, the values generated from the previous stock assessment will be roll
 
 ```{r}
 spp = params$stock
-yr = year
+yr = year = params$year
 region = area = params$area
 
   if(toupper(params$area)=="GOA"){
@@ -52,7 +52,7 @@ region = area = params$area
                                   col_types = "cccdddddd") 
   }
 
-if(!(region %in% df$area)){
+if(!(region %in% df$area) & region =="BSAI"){
   stop("the area must match the area field in the google sheet")
 }
 
