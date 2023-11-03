@@ -19,8 +19,8 @@ Imports:
     here,
     magrittr,
     readxl,
+    rmarkdown,
     tidyr
 Suggests: 
-    knitr,
-    rmarkdown
+    knitr
 VignetteBuilder: knitr
