@@ -60,6 +60,10 @@ if(!(region %in% df$area)){
     df %>% 
       dplyr::filter(stock %in% spp,
                     year %in% (yr-1):(yr+2)) -> df 
+    if(area=="GOA"){
+      df %>% 
+        dplyr::filter(area=="Total") -> df
+    }
   } else {
     df %>% 
       dplyr::filter(stock %in% spp,
@@ -67,15 +71,24 @@ if(!(region %in% df$area)){
                     area %in% region) -> df 
   }
 
-
-df %>% 
-  dplyr::select(Area=area, Year=year, OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>% 
-  flextable::flextable() %>% 
-  flextable::height(height=0.25) %>% 
-  flextable::hrule(rule = "exact")  %>% 
-  flextable::merge_v(j=1) %>% 
-  flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
-  flextable::fix_border_issues() 
-
+if(area=="GOA"){
+  df %>% 
+    dplyr::select(Year=year, OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>% 
+    flextable::flextable() %>% 
+    flextable::height(height=0.25) %>% 
+    flextable::hrule(rule = "exact")  %>% 
+    # flextable::merge_v(j=1) %>% 
+    # flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
+    flextable::fix_border_issues() 
+  } else {
+  df %>% 
+    dplyr::select(Area=area, Year=year, OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>% 
+    flextable::flextable() %>% 
+    flextable::height(height=0.25) %>% 
+    flextable::hrule(rule = "exact")  %>% 
+    flextable::merge_v(j=1) %>% 
+    flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
+    flextable::fix_border_issues() 
+}
 
 ```
