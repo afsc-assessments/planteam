@@ -45,11 +45,11 @@ region = area = params$area
   if(toupper(params$area)=="GOA"){
     df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
                                   sheet = "goa",
-                                  col_types = "cccdddddd") 
+                                  col_types = "cccddddddcc") 
   } else {
     df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
                                   sheet = "bsai",
-                                  col_types = "cccdddddd") 
+                                  col_types = "cccddddddcc") 
   }
 
 if(!(region %in% df$area) & region =="BSAI"){
