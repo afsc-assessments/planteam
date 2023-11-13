@@ -41,7 +41,7 @@ Until then, the values generated from the previous stock assessment will be roll
 spp = params$stock
 yr = year = params$year
 region = area = params$area
-
+googlesheets4::gs4_auth()
   if(toupper(params$area)=="GOA"){
     df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
                                   sheet = "goa",

@@ -33,10 +33,10 @@ flextable::set_flextable_defaults(font.family = "Times New Roman",
                                   font.size = 11)
 # load
 library(planteam)
-
+googlesheets4::gs4_auth()
 df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
                                 sheet = "goa",
-                                col_types = "cccdddddd") 
+                                col_types = "cccddddddcc") 
 ```
 
 ## 1. Walleye pollock
