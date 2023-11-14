@@ -94,7 +94,8 @@ catch_to_sheet <- function(year, data, area){
 
     # calculate the total catches for most stocks
   dat %>%
-    dplyr::filter(!(stock %in% c("pollock", "sablefish", "orox", "dsr")), !(grepl("GOA-wide", area))) %>%
+    dplyr::mutate(area = ifelse(area=='GOA-wide' & stock=="orox", 'W/C', area)) %>%
+    dplyr::filter(!(stock %in% c("pollock", "sablefish", "dsr")), !(grepl("GOA-wide", area))) %>%
     dplyr::group_split(year, stock) %>%
     purrr::map(~ tibble::add_row(.x,
                                  area = "Total",
@@ -136,19 +137,32 @@ catch_to_sheet <- function(year, data, area){
                                  year = yr,
                                  catch = sum(.x$catch[.x$area!="EYAK/SEO"|.x$area!="PWS GHL"], na.rm = T))) -> poll
 
-  # orox and dsr catches, then rejoin with other catches
   dat %>%
-    dplyr::filter(stock %in% c("orox", "dsr") | grepl("GOA-wide", area)) %>%
-    dplyr::mutate(area = ifelse(area!= "GOA-wide", "Total", area)) %>%
-    dplyr::group_by(stock, year, area) %>%
-    dplyr::summarise(catch = sum(catch), .groups="drop") %>%
-    bind_rows(tots, sable, poll) %>%
+    dplyr::filter(stock == "pop") %>%
+    dplyr::group_split(year, stock) %>%
+    purrr::map(~ tibble::add_row(.x,
+                                 area = "W/C/WYAK",
+                                 stock = tail(.x$stock, 1),
+                                 year = yr,
+                                 catch = sum(.x$catch[.x$area%in%c('W', 'C', "WYAK")], na.rm = T))) %>%
+    dplyr::bind_rows() %>%
+    dplyr::filter(area=="W/C/WYAK") -> pop
+
+  data.frame(stock="nork", year=yr, area='E') -> nork
+
+  #  dsr catches, then rejoin with other catches
+  df %>%
+    dplyr::mutate(year = as.numeric(year)) %>%
+    dplyr::filter(!(year %in% yr)) %>%
+    bind_rows(dat %>%
+                dplyr::filter(stock %in% c("dsr") | grepl("GOA-wide", area), stock!='orox') %>%
+                dplyr::mutate(area = ifelse(area!= "GOA-wide", "Total", area)) %>%
+                dplyr::group_by(stock, year, area) %>%
+                dplyr::summarise(catch = sum(catch), .groups="drop") %>%
+                bind_rows(tots, sable, poll, pop, nork)) %>%
     dplyr::mutate(stock = factor(stock, levels = goa_species$stock),
                   area = factor(area, levels = goa_levels)) %>%
-    dplyr::arrange(stock, area, year) %>% dplyr::select(-catch) %>%
-    dplyr::left_join(df %>%
-                        dplyr::mutate(year = as.numeric(year)), .,
-                     by = c('stock', 'year', 'area')) %>%
+    dplyr::arrange(stock, year, area) %>%
     dplyr::select(catch) -> ct
 
 
