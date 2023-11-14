@@ -145,17 +145,16 @@ catch_to_sheet <- function(year, data, area){
     bind_rows(tots, sable, poll) %>%
     dplyr::mutate(stock = factor(stock, levels = goa_species$stock),
                   area = factor(area, levels = goa_levels)) %>%
-    dplyr::arrange(stock, area, year) %>%
+    dplyr::arrange(stock, area, year) %>% dplyr::select(-catch) %>%
     dplyr::left_join(df %>%
                         dplyr::mutate(year = as.numeric(year)), .,
                      by = c('stock', 'year', 'area')) %>%
-    dplyr::mutate(catch = ifelse(year == yr, catch.y, catch.x)) %>%
     dplyr::select(catch) -> ct
 
 
   googlesheets4::range_write(ct, ss="https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=1812144961",
                              sheet = "goa",
-                             range ="I")
+                             range = "I")
 
 }
 
