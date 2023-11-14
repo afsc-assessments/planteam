@@ -45,11 +45,13 @@ googlesheets4::gs4_auth()
   if(toupper(params$area)=="GOA"){
     df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
                                   sheet = "goa",
-                                  col_types = "cccddddddcc") 
+                                  col_types = "cccddddddcc")  %>% 
+  dplyr::select(-c(completed, checked))
   } else {
     df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
                                   sheet = "bsai",
-                                  col_types = "cccddddddcc") 
+                                  col_types = "cccddddddcc")  %>% 
+  dplyr::select(-c(completed, checked))
   }
 
 if(!(region %in% df$area) & region =="BSAI"){
