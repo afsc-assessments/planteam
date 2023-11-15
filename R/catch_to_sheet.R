@@ -5,7 +5,7 @@
 #' @param data catch data file
 #' @param area 'goa' or 'bsai' - currently this only works for 'goa'
 #'
-#'#' @export catch_to_sheet
+#' @export catch_to_sheet
 #'
 #' @examples
 #' /dontrun{

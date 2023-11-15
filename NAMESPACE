@@ -2,6 +2,7 @@
 
 export("%>%")
 export(catch_report)
+export(catch_to_sheet)
 export(nameit)
 export(read_specs)
 importFrom(magrittr,"%>%")

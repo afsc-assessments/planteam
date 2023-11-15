@@ -11,9 +11,7 @@ catch_to_sheet(year, data, area)
 
 \item{data}{catch data file}
 
-\item{area}{'goa' or 'bsai' - currently this only works for 'goa'
-
-#' @export catch_to_sheet}
+\item{area}{'goa' or 'bsai' - currently this only works for 'goa'}
 }
 \description{
 Send AKRO catch data to the plan team google sheet
