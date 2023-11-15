@@ -135,7 +135,7 @@ catch_to_sheet <- function(year, data, area){
                                  area = "Subtotal",
                                  stock = tail(.x$stock, 1),
                                  year = yr,
-                                 catch = sum(.x$catch[.x$area!="EYAK/SEO"|.x$area!="PWS GHL"], na.rm = T))) -> poll
+                                 catch = sum(.x$catch[!(.x$area%in% c("EYAK/SEO","PWS GHL", "Total"))], na.rm = T))) -> poll
 
   dat %>%
     dplyr::filter(stock == "pop") %>%
