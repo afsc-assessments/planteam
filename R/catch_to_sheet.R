@@ -12,6 +12,7 @@
 #' catch_to_sheet(year=2023, data=goa_nov_catch, area='goa')
 #' }
 catch_to_sheet <- function(year, data, area){
+  googlesheets4::gs4_auth()
   # globals
   yr = year
   area = tolower(area)
