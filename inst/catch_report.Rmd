@@ -39,7 +39,7 @@ Until then, the values generated from the previous stock assessment will be roll
 
 ```{r}
 spp = params$stock
-yr = year = params$year
+yr = year = params$year 
 region = area = params$area
 googlesheets4::gs4_auth()
   if(toupper(params$area)=="GOA"){
