@@ -18,8 +18,11 @@ Imports:
     googlesheets4,
     here,
     magrittr,
+    openxlsx2,
+    purrr,
     readxl,
     rmarkdown,
+    tibble,
     tidyr
 Suggests: 
     knitr
