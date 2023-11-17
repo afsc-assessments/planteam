@@ -64,7 +64,7 @@ if(!(region %in% df$area) & region =="BSAI"){
                     year %in% (yr-1):(yr+2)) -> df 
     if(area=="GOA"){
       df %>% 
-        dplyr::filter(area=="Total") -> df
+        dplyr::filter(area%in%c("Total", "GOA-wide")) -> df
     }
   } else {
     df %>% 
