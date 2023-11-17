@@ -54,7 +54,7 @@ catch_report <- function(title, authors, stock, area, year, last_full_year, next
                   last_full_year = last_full_year,
                   next_full_year = next_full_year,
                   catch_data_date = catch_data_date),
-    output_file = paste(year, tolower(area), stock, "catch_report.docx", sep = "_"),
+    output_file = paste(toupper(area), stock, ".docx", sep = "_"),
     output_dir = output_dir,
     clean = TRUE)
 }
