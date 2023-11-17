@@ -18,3 +18,9 @@ spec_table(year, month = "sep", area = "goa", catch_date = "11/9/2023")
 \description{
 Create an Excel specs table
 }
+\examples{
+/dontrun{
+spec_table(year, month = "sep", area = "goa", catch_date="11/9/2023")
+}
+
+}
