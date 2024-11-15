@@ -47,7 +47,7 @@ catch_report <- function(title, authors, stock, area, year, last_full_year, next
   rmarkdown::render(
     input = system.file("catch_report.Rmd", package = 'planteam'),
     params = list(doc_title = title,
-                  authors = authors,
+                  # authors = authors,
                   stock = stock,
                   area = area,
                   year = year,

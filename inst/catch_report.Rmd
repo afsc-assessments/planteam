@@ -1,7 +1,7 @@
 ---
 params:
   doc_title:
-  authors:
+  # authors:
   stock:
   area:
   year:
@@ -43,14 +43,12 @@ yr = year = params$year
 region = area = params$area
 googlesheets4::gs4_auth()
   if(toupper(params$area)=="GOA"){
-    df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
-                                  sheet = "goa",
-                                  col_types = "cccddddddcc")  %>% 
-  dplyr::select(-c(completed, checked))
+    df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit?gid=0#gid=0",
+                                    sheet = "goa")  %>% 
+  dplyr::select(-c(completed, check, check_2))
   } else {
-    df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
-                                  sheet = "bsai",
-                                  col_types = "cccddddddcc")  %>% 
+    df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit?gid=0#gid=0",
+                                  sheet = "bsai")  %>% 
   dplyr::select(-c(completed, checked))
   }
 
@@ -60,7 +58,7 @@ if(!(region %in% df$area) & region =="BSAI"){
 
   if(area %in% c("GOA", "BSAI")){
     df %>% 
-      dplyr::filter(stock %in% spp,
+      dplyr::filter(species %in% spp,
                     year %in% (yr-1):(yr+2)) -> df 
     if(area=="GOA"){
       df %>% 
@@ -68,7 +66,7 @@ if(!(region %in% df$area) & region =="BSAI"){
     }
   } else {
     df %>% 
-      dplyr::filter(stock %in% spp,
+      dplyr::filter(species %in% spp,
                     year %in% (yr-1):(yr+2),
                     area %in% region) -> df 
   }
@@ -79,6 +77,7 @@ if(area=="GOA"){
     flextable::flextable() %>% 
     flextable::height(height=0.25) %>% 
     flextable::hrule(rule = "exact")  %>% 
+      flextable::colformat_num(j=1, big.mark = "") %>% 
     # flextable::merge_v(j=1) %>% 
     # flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
     flextable::fix_border_issues() 
@@ -87,7 +86,8 @@ if(area=="GOA"){
     dplyr::select(Area=area, Year=year, OFL=ofl, ABC=abc, TAC=tac, Catch=catch) %>% 
     flextable::flextable() %>% 
     flextable::height(height=0.25) %>% 
-    flextable::hrule(rule = "exact")  %>% 
+    flextable::hrule(rule = "exact")  %>%
+        flextable::colformat_num(j=1, big.mark = "") %>% 
     flextable::merge_v(j=1) %>% 
     flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
     flextable::fix_border_issues() 
