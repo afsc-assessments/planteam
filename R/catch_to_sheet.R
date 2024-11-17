@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' /dontrun{
-#' catch_to_sheet(year=2023, data=goa_nov_catch, area='goa')
+#' catch_to_sheet(year=2024, data=goa_nov_catch, area='goa')
 #' }
 catch_to_sheet <- function(year, data, area){
   googlesheets4::gs4_auth()
@@ -50,11 +50,11 @@ catch_to_sheet <- function(year, data, area){
   bsai_levels = c("BSAI", "EBS", "BS", "AI", "Bogoslof", "BSAI/GOA", "EAI", "EAI/BS", "CAI", "WAI", "EBS/EAI", "CAI/WAI")
 
   # data ----
-  # data <- vroom::vroom("C:/Users/Ben.Williams/Downloads/catch_table_nov_pt.csv")
+  data <- vroom::vroom(here::here("dev", 2024, "catch_table_nov_pt.csv"))
   if(area=='goa'){
   df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=1812144961",
                                   sheet = "goa",
-                                  col_types = "cccddddddcc")
+                                  col_types = "cccddddddccc")
   } else {
     df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=1812144961",
                                     sheet = "bsai",
@@ -95,6 +95,7 @@ catch_to_sheet <- function(year, data, area){
 
     # calculate the total catches for most stocks
   dat %>%
+    tidyr::drop_na(stock)
     dplyr::mutate(area = ifelse(area=='GOA-wide' & stock=="orox", 'W/C', area)) %>%
     dplyr::filter(!(stock %in% c("pollock", "sablefish", "dsr")), !(grepl("GOA-wide", area))) %>%
     dplyr::group_split(year, stock) %>%
@@ -155,22 +156,20 @@ catch_to_sheet <- function(year, data, area){
   df %>%
     dplyr::mutate(year = as.numeric(year)) %>%
     dplyr::filter(!(year %in% yr)) %>%
-    bind_rows(dat %>%
+    dplyr::bind_rows(dat %>%
                 dplyr::filter(stock %in% c("dsr") | grepl("GOA-wide", area), stock!='orox') %>%
                 dplyr::mutate(area = ifelse(area!= "GOA-wide", "Total", area)) %>%
                 dplyr::group_by(stock, year, area) %>%
                 dplyr::summarise(catch = sum(catch), .groups="drop") %>%
-                bind_rows(tots, sable, poll, pop, nork)) %>%
+                dplyr::bind_rows(tots, sable, poll, pop, nork)) %>%
     dplyr::mutate(stock = factor(stock, levels = goa_species$stock),
                   area = factor(area, levels = goa_levels)) %>%
     dplyr::arrange(stock, year, area) %>%
     dplyr::select(catch) -> ct
 
 
-  googlesheets4::range_write(ct, ss="https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=1812144961",
-                             sheet = "goa",
-                             range = "I")
-
+  googlesheets4::sheet_write(ct, ss="https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=1812144961",
+                             sheet = "goa")
 }
 
 

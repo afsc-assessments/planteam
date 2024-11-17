@@ -12,7 +12,7 @@
 #' spec_table(year, month = "sep", area = "goa", catch_date="11/9/2023")
 #' }
 #'
-spec_table <- function(year, month = "sep", area = "goa", catch_date="11/9/2023") {
+spec_table <- function(year, month = "nov", area = "goa", catch_date="11/1/2024") {
 
   if(!(area %in% c("goa", "bsai"))){
     stop("area must be 'goa' or 'bsai'")
@@ -69,9 +69,8 @@ spec_table <- function(year, month = "sep", area = "goa", catch_date="11/9/2023"
   # data
   if(area=="goa"){
     df = googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=0",
-                                   sheet = "goa",
-                                   col_types = "cccddddddcc")  %>%
-      dplyr::select(-biomass, -rec_age, -completed, -checked)
+                                   sheet = "goa")  %>%
+      dplyr::select(-biomass, -rec_age, -completed, -check, -check_2)
   } else {
     df = googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit?pli=1#gid=276255793",
                                    sheet = "bsai",
@@ -140,13 +139,12 @@ spec_table <- function(year, month = "sep", area = "goa", catch_date="11/9/2023"
 
   } else if(area=='goa' & month=='nov'){
     df %>%
-      filter
-      dplyr::filter(year %in% (yr):(yr+2)) %>%
-      tidyr::pivot_wider(names_from = year, values_from = c(-stock, -area, -year)) %>%
+      dplyr::filter(year %in% (yr-1):(yr+2)) %>%
+      tidyr::pivot_wider(names_from = year, values_from = c(-species, -area, -year)) %>%
       dplyr::select(dplyr::any_of(nov_names)) %>%
-      dplyr::left_join(bsai_species) %>%
-      dplyr::mutate(stock = id,
-                    stock = ifelse(stock=="sablefish" & area=="AK-wide", "Alaska-wide OFL and ABC", stock)) %>%
+      dplyr::left_join(goa_species) %>%
+      dplyr::mutate(species = id,
+                    species = ifelse(stock=="sablefish" & area=="AK-wide", "Alaska-wide OFL and ABC", stock)) %>%
       dplyr::select(-id)  %>%
       dplyr::mutate(stock = factor(stock, levels = bsai_species$id),
                     area = factor(area, levels = bsai_levels)) -> dat
