@@ -1,0 +1,20 @@
+project:
+  type: default
+  output-dir: _output
+  execute-dir: project
+  render:
+    - catch-report.qmd
+
+lang: en-US
+format:
+  html:
+    embed-resources: true
+    toc: false
+  docx:
+    reference-doc: inst/template.docx
+    toc: false
+execute:
+  echo: false
+  error: false
+  cache: false
+  freeze: false

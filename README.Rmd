@@ -4,32 +4,140 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
-
 # planteam
 
-<!-- badges: start -->
-<!-- badges: end -->
+`planteam` is an R package for annual SAFE/Plan Team summary tables, off-cycle
+catch reports, and AKRO specification tables. The existing R Markdown templates
+and package API remain available. The new checkout workflow renders a catch
+report from an explicit local CSV snapshot to **HTML and Word**, without Google
+authentication or installing the full package. It performs no stock assessment,
+projection, apportionment, or total calculations.
 
-The goal of planteam is to facilitate the development of the annual SAFE summaries using .Rmd files to produce a word doc - that will likely be hosted on google docs for edits. 
-Additionally, this package can be used to generate catch reports (for off-cycle assessments) and the specs tables used by the AKRO. 
-Since all of these products are supposed to be pulling from the same data source this will hopefully eliminate copy & paste errors.
+## Local document-builder app
 
-See the [planteam webpage articles](https://afsc-assessments.github.io/planteam/) for more information.
+For the BSAI/GOA SAFE introduction editor, double-click `Start Builder.command`
+and open <http://127.0.0.1:3847>. The on-demand Mac service stays available after
+the task or launcher terminal closes. Use `Stop Builder.command` when finished.
+See [builder setup, editing, saving and rendering](BUILDER.md) and
+[the four inspected PDF examples](PDF-EXAMPLES.md). The app keeps both FMPs in a
+portable JSON working file and renders HTML, Word and PDF. Its stock-specific
+boilerplate contains TODO prompts, with no historical advice presented as current.
 
-## Installation
+## Quick start with synthetic example data
 
-You can install the development version of planteam from [GitHub](https://github.com/) with:
+Install [Quarto CLI](https://quarto.org/docs/get-started/) and R (the new scripts
+require R >= 4.1; the package's older minimum is unchanged). From this checkout:
 
-``` r
-# install.packages("devtools")
-devtools::install_github("afsc-assessments/planteam")
+```sh
+Rscript --vanilla -e 'install.packages(c("knitr", "rmarkdown", "yaml"), repos="https://cloud.r-project.org")'
+quarto check knitr
+Rscript --vanilla scripts/test-report.R
+Rscript --vanilla scripts/render-report.R --example
 ```
 
+Open `_output/example/catch-report.html` or
+`_output/example/catch-report.docx`. Both visibly label the invented example.
+The CSV contains invented values; it is neither historical evidence nor advice.
+The Quarto R package, LaTeX, Google credentials, and the `planteam` package are
+unnecessary for this path. Install packages once; subsequent renders are offline.
+
+## Render approved production data
+
+```sh
+mkdir -p inputs
+cp config/catch-report.production.example.yml inputs/catch-report.yml
+# Place an approved snapshot at inputs/specs.csv and fill every YAML null.
+Rscript --vanilla scripts/render-report.R --params inputs/catch-report.yml
+```
+
+Run from the repository root. Input paths in YAML are root-relative or absolute,
+including when the YAML itself is elsewhere. Use a UTF-8, comma-delimited CSV
+with a header and one row per `stock,year,area`:
+
+| Required field | Format and meaning |
+|---|---|
+| `stock` | Lowercase repository shorthand, e.g. `pollock`, `pcod`, `orox`; not a common-name label. `species` is accepted as an alias only when it contains this shorthand. Conflicting aliases fail. |
+| `year` | Integer calendar year. Selected rows must cover report year − 1 through year + 2. |
+| `area` | Exact management-area label. `GOA` selects `Total`/`GOA-wide`; `BSAI` retains all areas for that stock; other values (e.g. `Bogoslof`) select an exact area. Only the two region selectors are case-insensitive. |
+| `ofl`, `abc`, `tac`, `catch` | Nonnegative numeric metric tonnes (t), without thousands separators, formulas or unit strings. Blank or `NA` represents unavailable data; zero remains zero. |
+
+Extra columns are ignored by the catch report. No units are inferred or converted.
+Missing files/columns, duplicate keys, malformed numbers, empty selections,
+incomplete year coverage and invalid metadata stop the render. Production mode
+refuses the bundled `examples/` path; there is no automatic fallback. An analyst
+must confirm units, the source revision, assessment schedule and approval status.
+
+The parameter YAML requires `example: false`, `doc_title`, `authors`, `stock`,
+`area`, `year`, `last_full_year`, `next_full_year`, `catch_data_date`, `input_csv`,
+`input_source` (source/tab/revision/approval identifier), and a quoted ISO
+`snapshot_date`. The previous full assessment must precede the report year and
+the next full assessment must follow it. Dates and assessment schedules are
+supplied metadata, not verified management decisions.
+
+## Outputs and provenance
+
+The runner writes these exact files under `_output/example/` for `--example`,
+or `_output/production/` for `--params`:
+
+- `catch-report.html`: self-contained review document.
+- `catch-report.docx`: editable Word document using `inst/template.docx`.
+- `catch-table.csv`: selected stock/year/area and supplied numeric values, preserving row order and NA.
+- `provenance.yml`: parameters, input/parameter/source/output MD5 identifiers, Git revision and dirty status, UTC render time, R/Quarto/package versions.
+- `session-info.txt`: R session details.
+
+Repeated runs overwrite that mode's outputs. Copy an approved bundle to an
+access-controlled archive before the next run; retain the input snapshot and
+source revision there. A successful bundle has `provenance.yml`; a failed render
+can leave partial or older documents and never certifies them. MD5 identifies
+content; it is not a security signature. Software versions are recorded rather
+than locked. The original `docs/` pkgdown site is unchanged.
+
+For direct Quarto use (documents only, without the CSV/manifest/session bundle):
+
+```sh
+quarto render catch-report.qmd --to all --execute-params examples/catch-report.yml --output-dir _output/example
+```
+
+`quarto render` without parameters intentionally fails; production inputs are
+never guessed. `_quarto.yml` renders only `catch-report.qmd`, so legacy vignettes,
+README and live Google Sheet templates are not accidentally executed.
+
+## Existing products and migration
+
+See [workflow evaluation and legacy input/output contracts](WORKFLOW.md) and
+[validation evidence and remaining checks](VALIDATION.md). Summary templates,
+`catch_report()`, `read_specs()`, `spec_table()`, and `catch_to_sheet()` are
+unchanged. The new Quarto workflow runs from a clone, not an installed package.
+Full GOA/BSAI summaries and specification exports still use the legacy workflow;
+they have not been certified by the example catch-report test.
+
+To install the existing package with all its declared dependencies:
+
+```r
+install.packages("remotes")
+remotes::install_local(".", dependencies = TRUE, build_vignettes = FALSE)
+# Or install upstream main (which omits this feature branch):
+# remotes::install_github("afsc-assessments/planteam")
+```
+
+## Troubleshooting and restricted inputs
+
+| Symptom | Action |
+|---|---|
+| `quarto` unavailable | Install the CLI, restart the shell and run `quarto --version`. The R package alone does not install the CLI. |
+| Missing R package | Install `knitr`, `rmarkdown`, `yaml` into the R library used by `quarto check knitr`. Set `QUARTO_R` to the intended R installation if needed. |
+| Missing input or metadata | Fill `inputs/catch-report.yml` and supply the approved CSV. Never rename example data as production. |
+| No rows / missing years | Check shorthand, exact area labels and report year. Include explicit NA rows for unavailable future values; obtain missing source records rather than inventing values. |
+| Numeric/schema error | Export values rather than spreadsheet formulas; remove thousands separators, retain missingness and resolve duplicate keys at source. |
+| Legacy login or Sheet failure | An authorized analyst must authenticate separately; rendering the new workflow never requests access. No production snapshot was retrieved during this migration. |
+| Word differs across machines | HTML is the primary review view; inspect Word in the target editor. The inherited reference DOCX can affect pagination. |
+
+`inputs/`, `_output/`, and `.quarto/` are Git-ignored. A `.gitignore` is not access
+control: keep confidential or restricted data on approved storage, do not commit
+credentials, and review rendered tables and provenance before sharing. The
+manifest includes input paths and source identifiers. Do not upload restricted
+snapshots or their derived reports to GitHub, the wiki, or a public document.
+
+The [existing package articles](https://afsc-assessments.github.io/planteam/)
+describe the original workflow. To regenerate this README, edit `README.Rmd` and
+run `Rscript --vanilla -e 'rmarkdown::render("README.Rmd")'`.
