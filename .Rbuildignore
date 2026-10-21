@@ -2,3 +2,25 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^LICENSE\.md$
+^_quarto\.yml$
+^_output$
+^\.quarto$
+^catch-report\.qmd$
+^catch-report_files$
+^scripts$
+^examples$
+^config$
+^inputs$
+^WORKFLOW\.md$
+^VALIDATION\.md$
+
+^app$
+^appdata$
+^BUILDER\.md$
+^PDF-EXAMPLES\.md$
+
+^BSAIintro.*\.pdf$
+^GOAintro.*\.pdf$
+
+^Start Builder\.command$
+^Stop Builder\.command$
