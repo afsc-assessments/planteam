@@ -150,3 +150,55 @@ process, mismatched commands are never stopped, and absent jobs trigger no signa
 Shell launcher syntax and Python parsing passed. Later independent checks still
 reported the same process, HTTP readiness and the identical working-file checksum.
 The Council wiki was rebuilt with the Start/Stop links and checked locally.
+
+
+## Follow-up: contextual help
+
+Implemented mouse-hover and keyboard-focus hints in the existing static assets,
+with `aria-describedby`, visible focus rings, Escape dismissal and a hoverable
+hint surface. A prominent Help & hints link opens `app/www/help.html` separately;
+Return to editor focuses the originating tab without reloading its session.
+A direct visit has an ordinary editor-link fallback. The page describes the
+actual selection/edit/save/recovery/export behavior, output paths, common errors,
+local versus hosted operation, and scientific/accessibility release limitations.
+No R document/render calculations, schema, dependencies or launcher behavior
+changed.
+
+Passed in Chrome on this Mac on 21 October 2026:
+
+- Mouse-only hover on the render-mode label showed its hint while focus stayed
+  outside the control; moving onto the hint kept it visible.
+- Tab focus showed the stock-selector hint, with its `aria-describedby` target;
+  Escape dismissed it. Focus outlines and hint placement were inspected visually.
+- Initial QA caught a narrative hint obscuring clipboard buttons. Placement was
+  corrected to prefer above the control; Copy worked in the revised browser UI.
+- Mouse and Enter activation opened Help; mouse and keyboard Return closed Help
+  and restored the same editor. Nondefault GOA/Pacific cod/trends selection,
+  multiline narrative and the BSAI subsection clipboard remained intact.
+- Help topic anchors and the direct-visit return fallback worked. Desktop Help
+  layout and the live production Help URL were inspected visually.
+- Synthetic BSAI summary, EBS pollock and GOA cod edits saved in a separate
+  task-workspace storage directory; refresh/reopen retained multiline and literal
+  markup text. The temporary port-3848 test server was stopped after QA.
+- `Rscript --vanilla app/tests/test-document.R` passed model and Shiny observer
+  checks. JavaScript syntax checks (`node --check` for both scripts), Help HTML
+  language/headings/unique IDs/topic anchors/local assets, and `git diff --check`
+  passed. No browser console warnings/errors were observed in the QA session.
+- `quarto render planteam.qmd` in the existing Council wiki succeeded; its
+  validator checked 11 pages and 761 local references without errors.
+
+The live Chrome editor was saved and refreshed to load the changed static assets.
+Its original BSAI/front-matter/summary selection, Review and render tab, draft mode
+and Word-only format selection were restored. Its internal clipboard was empty
+before refreshing. The saved production working JSON retained the same checksum
+as at the start of the help task. The independent port-3847 app service was not
+restarted. As documented, a refresh clears session render links; existing bundles
+remain on disk.
+
+Not rerun for this static-help change: synthetic HTML/DOCX/PDF rendering and the R
+package build, which passed before the preceding push. Full screen-reader,
+accessibility conformance and native Word pagination reviews remain outstanding.
+Before the authorized help push on 22 October 2026, the model/Shiny checks,
+JavaScript syntax, Help structure/links/assets and diff whitespace checks were
+rerun successfully. This record describes the pre-push validation; hosted
+deployment remains outside this follow-up.
