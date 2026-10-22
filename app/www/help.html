@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Help · SAFE introduction builder</title>
+<link rel="stylesheet" href="help.css">
+<script src="help.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to help topics</a>
+<header>
+  <div><p class="eyebrow">COUNCIL / PLANTEAM</p><h1>Builder help</h1><p>From editable boilerplate to a reviewed document</p></div>
+  <a class="button" id="help-return" href="./">Return to editor</a>
+</header>
+<main id="main">
+<p class="intro">Help opens separately so your original editor, selections and internal clipboard stay in place. Return to editor brings that tab forward when available. If this page was opened directly, it opens an editor instead.</p>
+<p id="return-message" role="status" hidden>Your editor remains open in its original tab. Switch to it, or <a href="./">open another editor</a>. A second editing session may produce a save conflict.</p>
+<nav aria-label="Help topics">
+<a href="#select">Choose content</a><a href="#edit">Edit and paste</a><a href="#save">Save and recover</a><a href="#render">Review and export</a><a href="#files">Find files</a><a href="#errors">Common errors</a><a href="#launch">Start and stop</a><a href="#hosting">Local versus hosted</a><a href="#release">Before release</a>
+</nav>
+
+<section id="select"><h2>Choose the FMP, stock and subsection</h2>
+<p>Select <strong>BSAI or GOA → Document part or stock → Regional component → Subsection</strong>. Both FMPs share one working JSON but have separate document details. Switching views preserves edits. Front matter, appendices and tables holds document-wide material; Whole stock holds shared material.</p>
+<p>New documents contain <strong>TODO prompts</strong>, not current scientific findings. Replace prompts with approved content and sources. Check the heading before pasting. Include/exclude controls change exports without deleting text; whole-stock controls affect every subsection for the selected stock.</p>
+<p>Hover over a control, or focus it using <kbd>Tab</kbd>, for a short hint. <kbd>Escape</kbd> dismisses it. Hints remain visible while the control has focus or the pointer is over the hint. Use <kbd>Shift</kbd> + <kbd>Tab</kbd> to move back.</p></section>
+
+<section id="edit"><h2>Edit, copy and paste</h2>
+<p>Paste multiline narrative with <kbd>Cmd</kbd> + <kbd>V</kbd>. Text is plain: Markdown, HTML, TeX, code and Quarto shortcodes render literally. The editor does not import PDF prose, rich formatting, images or citations.</p>
+<ul>
+<li><strong>Copy whole subsection</strong> copies narrative, table, caption and source fields to this session's internal clipboard.</li>
+<li><strong>Cut subsection</strong> copies internally, then clears the content.</li>
+<li><strong>Paste copied subsection (replace)</strong> replaces the target and clears its author-review flag. It can copy across stocks and FMPs; review the target carefully.</li>
+<li><strong>Undo cut / paste</strong> restores one preceding internal cut or paste at its original target. It is not general typing history. The internal clipboard and undo do not survive a page reload.</li>
+</ul>
+<p>Expand <strong>Table, caption and units</strong> to paste tab-separated spreadsheet rows: one header, 2–30 unique nonempty columns, equal-width rows, at most 1000 data rows. Preserve zeros, NA and empty cells explicitly; embedded cell tabs/newlines are unsupported. Supply a caption and units. Values stay text; the app calculates no totals, projections or unit conversions. Tables wider than seven columns split into panels, repeating the first two identifier columns.</p></section>
+
+<section id="save"><h2>Save, reopen, import and recover</h2>
+<p>The app autosaves after an 800 ms pause. Choose <strong>Save now</strong> and wait for <strong>Saved locally</strong> before closing, refreshing or stopping. <strong>Download working copy</strong> exports the complete JSON for both FMPs; retain a copy before imports or recovery.</p>
+<p><strong>Reopen saved file</strong> reloads the disk version. Download your session's edits first if saving failed or another session changed the file. <strong>Working files → Open a builder working copy (.json)</strong> validates an import, saves the current document, then replaces both FMPs. <strong>New document</strong> also preserves the preceding file before creating fresh TODO scaffolds.</p>
+<p>Saves use atomic replacement and keep the latest 20 prior disk versions in <code>appdata/backups/</code>. For recovery, first download the current session, then import a chosen backup JSON through Working files. A failed save when a session ends attempts an additional <code>appdata/recovery-*.json</code> copy. Neither autosave nor recovery substitutes for a retained backup.</p>
+<p>Concurrent sessions refuse to overwrite a changed disk file. Unknown schema versions, malformed JSON and files over 20 MB are rejected. Schema 1 imports migrate to schema 2 by adding an excluded optional sculpin appendix; existing content is retained. Never delete the working file to resolve an error.</p></section>
+
+<section id="render"><h2>Review, check HTML and export</h2>
+<p>Fill the selected FMP's document details. For each included subsection, supply content and a source/run/approval reference, enter the <strong>report year for which you reviewed that source</strong>, then mark author review. This year must match Report year; it need not be the source's publication year. Content edits and internal paste clear the review flag.</p>
+<p>In <strong>Review and render</strong>, Working draft labels missing, placeholder, stale and unreviewed content. For review blocks rendering until all included items pass the checklist. Invalid tables must be fixed even for a draft. Choose HTML, Word and/or PDF, then <strong>Save and render selected FMP</strong>. Both FMPs are saved; only the selected FMP is rendered.</p>
+<p>Open <strong>HTML QA/QC</strong> to check order, headings, content, tables, units and warning labels. Then inspect Word and PDF separately for page breaks, clipping, table panels and links. PDF needs Quarto, XeLaTeX and Times New Roman. Word uses <code>inst/template.docx</code>; update its table-of-contents field in Word.</p>
+<p>Each render creates a new bundle and preserves previous runs. A format may fail while others succeed. Read the format status and log; only successful files receive output links. Return to this editor to revise and render again.</p></section>
+
+<section id="files"><h2>Find working files and outputs</h2>
+<p>Paths below are relative to <code>~/_mymods/Council/planteam/</code>. Working files displays the active storage path; an explicit <code>PLANTEAM_BUILDER_DATA</code> setting can change working-file storage.</p>
+<dl>
+<dt><code>appdata/working.json</code></dt><dd>Editable document for both FMPs, including excluded material and review flags.</dd>
+<dt><code>appdata/backups/</code> and <code>appdata/recovery-*.json</code></dt><dd>Prior saved versions and any session-end recovery files.</dd>
+<dt><code>_output/builder/&lt;document-id&gt;-&lt;FMP&gt;-&lt;unique-suffix&gt;/</code></dt><dd>The exact bundle path appears after rendering. It contains <code>working-document.json</code>, <code>document.qmd</code>, <code>_quarto.yml</code>, <code>manifest.yml</code>, logs and successful <code>rendered/document.html</code>, <code>document.docx</code> or <code>document.pdf</code>.</dd>
+<dt><code>appdata/builder-service.log</code></dt><dd>Launcher/service diagnostics. Format logs are <code>render-html.log</code>, <code>render-docx.log</code> and <code>render-pdf.log</code> inside the bundle.</dd>
+</dl>
+<p>These directories are Git-ignored. Keep restricted inputs and derived documents on approved local storage; review every file before sharing. The app performs no automatic data fetch or external upload.</p></section>
+
+<section id="errors"><h2>Common errors</h2>
+<dl class="errors">
+<dt>Missing, stale or unreviewed</dt><dd>Replace TODO/example content, complete metadata/source fields, match the source-review year and review each included subsection. Exclude material intentionally outside the document.</dd>
+<dt>Unequal-width table or duplicate headings</dt><dd>Paste true tabs, one unique header per column and the same number of cells per row. Add a caption with units.</dd>
+<dt>Working file changed in another session</dt><dd>Download your session's working copy before reopening the disk file. Reconcile the copies explicitly; the app does not merge them.</dd>
+<dt>Save locked or SAVE FAILED</dt><dd>Download a copy, read the error and check available disk space/permissions. Remove a stale <code>working.json.lock</code> directory only after confirming no app process is writing.</dd>
+<dt>RENDER FAILED or a failed format</dt><dd>Check the checklist and retained log. Confirm Quarto, required R packages and, for PDF, XeLaTeX/font dependencies. Your saved document remains available. Fix the cause and render a new bundle.</dd>
+<dt>Output link no longer opens</dt><dd>Browser output links belong to the session that rendered them. After a reload, close or restart, use the original files in the recorded bundle, or render again.</dd>
+</dl></section>
+
+<section id="launch"><h2>Start and stop on this Mac</h2>
+<p>Double-click <strong>Start Builder.command</strong> in the repository, then open <a href="http://127.0.0.1:3847/">http://127.0.0.1:3847/</a>. Start reuses this checkout's healthy service. Save before double-clicking <strong>Stop Builder.command</strong>. Stop leaves documents and backups in place.</p>
+<pre><code>cd ~/_mymods/Council/planteam
+/usr/bin/python3 scripts/manage-builder.py start
+/usr/bin/python3 scripts/manage-builder.py status
+# Save first, then stop when finished:
+/usr/bin/python3 scripts/manage-builder.py stop</code></pre>
+<p>The on-demand Mac service survives terminal/task completion, stops at logout and does not start at boot/login. An occupied port from an unmanaged process is reported and left untouched. Read <code>appdata/builder-service.log</code> if the page will not load. After application R code changes, save, stop and start; refresh to load changed help/JavaScript/CSS. A refresh clears the session clipboard, undo and output links, so finish those actions first.</p></section>
+
+<section id="hosting"><h2>Local versus hosted</h2>
+<p>The current app runs on this Mac. Start it with <strong>Start Builder.command</strong>, then open <a href="http://127.0.0.1:3847/">http://127.0.0.1:3847/</a>. A push stores source code on GitHub; it does not host the running app. GitHub Pages can show static documents but cannot run this R/Shiny and Quarto backend.</p>
+<p>Hosting on a server is a separate deployment project. It would need R, the app packages, Quarto and the PDF dependencies, plus persistent storage, access controls, restricted-data review and separate drafts for each user. The current app uses one working JSON per storage directory; it is not ready for shared multiuser hosting. No server deployment is part of this local setup.</p></section>
+
+<section id="release"><h2>Before scientific release</h2>
+<p>Checklist completion records author checks; it does not establish scientific correctness, adopted management advice or release approval. Historical examples provide structure only. Check all current facts, calculations supplied by authors, sources, dates, units and approvals.</p>
+<p>Review target Word pagination and the table of contents in Word. Inspect PDF layout separately. The PDF is currently untagged and has not been certified for Section 508. Keyboard/focus hints improve access to the editor; full screen-reader and accessibility conformance audits remain outstanding. Rich formatting, embedded images, automatic citations, multiuser merging and page-for-page historical reproduction are outside this editor's current capabilities.</p>
+<p>For setup and detailed validation commands, read <code>BUILDER.md</code> and <code>VALIDATION.md</code> in the repository. This Help page and the app run locally; publication is a separate decision.</p></section>
+<footer><a href="#main">Back to help topics</a><span>Local SAFE introduction builder</span></footer>
+</main>
+</body>
+</html>

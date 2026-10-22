@@ -48,6 +48,37 @@ Google login or automatic data fetch. PDF additionally needs a working XeLaTeX
 installation and Times New Roman; both were available on this Mac. Automatic TeX
 package installs are disabled, so a missing package/font produces a retained log.
 
+## Help in the app
+
+The prominent **Help & hints** link opens a separate local page at
+<http://127.0.0.1:3847/help.html>. **Return to editor** brings the original tab
+forward without reloading it, preserving selections, clipboard and undo. If help
+was opened directly or its original tab has closed, the return link opens an
+editor; a second session may conflict with an existing one. Help includes topic
+links, saving/recovery, export paths, common errors and release limitations.
+
+Hover over a control or focus it with Tab for a short description. The same text
+is associated with its control using `aria-describedby`; Escape dismisses the
+hint. Hints stay available while the pointer is over them or the control has
+focus. They do not change input values. Full screen-reader/conformance testing is
+still required before claiming accessibility compliance.
+
+Help/JavaScript/CSS updates need a browser refresh, rather than a service restart.
+Save first and finish any internal clipboard/undo operation before refreshing;
+those items and browser output links belong to the session. Rendered bundles
+remain on disk. Application R code changes still require a saved, controlled
+stop/start.
+
+## Local versus hosted
+
+Start the app on this Mac with `Start Builder.command`, then open
+<http://127.0.0.1:3847/>. Pushing the source to GitHub does not start or host the
+R/Shiny backend. GitHub Pages can serve static outputs but cannot run this app.
+A server deployment would need R, Quarto, render dependencies, persistent
+storage, access controls and separate user drafts. The current single-working-
+file design is not ready for shared multiuser hosting; deployment is a separate
+project.
+
 ## Edit a working document
 
 1. Select BSAI or GOA, a document part/stock, regional component and subsection.
