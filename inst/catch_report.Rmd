@@ -77,7 +77,7 @@ if(area=="GOA"){
     flextable::flextable() %>% 
     flextable::height(height=0.25) %>% 
     flextable::hrule(rule = "exact")  %>% 
-      flextable::colformat_num(j=1, big.mark = "") %>% 
+      flextable::colformat_num(j=1:2, big.mark = "") %>% 
     # flextable::merge_v(j=1) %>% 
     # flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
     flextable::fix_border_issues() 
@@ -87,7 +87,7 @@ if(area=="GOA"){
     flextable::flextable() %>% 
     flextable::height(height=0.25) %>% 
     flextable::hrule(rule = "exact")  %>%
-        flextable::colformat_num(j=1, big.mark = "") %>% 
+        flextable::colformat_num(j=1:2, big.mark = "") %>% 
     flextable::merge_v(j=1) %>% 
     flextable::hline(i = rle(cumsum(.$body$spans$columns[,1]))$values) %>% 
     flextable::fix_border_issues() 
