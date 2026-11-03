@@ -1,0 +1,14 @@
+# Copy to ignored inputs/catch-report.yml and replace every null.
+# Paths are relative to the repository root, or absolute.
+example: false
+doc_title: null
+authors: null
+stock: null
+area: null
+year: null
+last_full_year: null
+next_full_year: null
+catch_data_date: null
+input_csv: inputs/specs.csv
+input_source: null # Source identifier, sheet/tab, revision and approval reference
+snapshot_date: null # Quoted ISO date, e.g. "2026-11-05"

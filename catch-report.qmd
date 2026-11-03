@@ -1,0 +1,61 @@
+---
+title: "Catch report"
+params:
+  example: false
+  doc_title: null
+  authors: null
+  stock: null
+  area: null
+  year: null
+  last_full_year: null
+  next_full_year: null
+  catch_data_date: null
+  input_csv: null
+  input_source: null
+  snapshot_date: null
+---
+
+```{r}
+#| label: setup
+#| include: false
+source("scripts/report-helpers.R")
+report <- prepare_catch_report(params)
+options(knitr.kable.NA = "NA")
+```
+
+## `r params$doc_title`
+
+`r params$authors`
+
+`r if (params$example) "**EXAMPLE ONLY — synthetic data; unsuitable for management advice.**" else ""`
+
+The most recent full assessment of this stock was in `r params$last_full_year`
+and can be found in the [Council SAFE report library](https://www.npfmc.org/library/safe-reports/).
+Catch data are current through `r params$catch_data_date`.
+The supplied assessment schedule identifies `r params$next_full_year` as the next full assessment year.
+The table presents the supplied specifications through `r params$year + 2`;
+the report performs no assessment or projection calculations.
+
+## Catch and specifications
+
+OFL (overfishing limit), ABC (acceptable biological catch), TAC (total allowable
+catch), and catch are in metric tonnes (t). Values and row order are retained
+from the snapshot for `r params$year - 1`–`r params$year + 2`.
+NA means missing or unavailable in the snapshot; zero remains zero.
+
+```{r}
+#| label: tbl-catch
+#| tbl-cap: "Catch and specifications from the supplied snapshot (t)."
+knitr::kable(report$table, digits = 10, format.args = list(scientific = FALSE))
+```
+
+## Data provenance
+
+Source: `r params$input_source`.
+Snapshot date: `r params$snapshot_date`.
+Input file: `r basename(params$input_csv)`.
+Input MD5: `r report$input_md5`.
+Selection: `r params$stock`, `r params$area`, report year `r params$year`.
+
+Production use requires an approved snapshot, confirmation of the assessment
+schedule and units, and author review of the values and narrative.

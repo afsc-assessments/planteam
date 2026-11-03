@@ -1,0 +1,13 @@
+# Synthetic fixture only. These are invented values, not assessment results.
+example: true
+doc_title: "Example Bogoslof pollock catch report"
+authors: "Example author"
+stock: pollock
+area: Bogoslof
+year: 2023
+last_full_year: 2021
+next_full_year: 2024
+catch_data_date: "November 5, 2023"
+input_csv: examples/catch.csv
+input_source: "Synthetic fixture created for workflow testing"
+snapshot_date: "2026-10-21"
