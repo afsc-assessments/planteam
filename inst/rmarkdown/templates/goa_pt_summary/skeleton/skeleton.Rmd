@@ -91,7 +91,7 @@ df %>%
 *Status determination*
 The Gulf of Alaska `r spp` stock is not being subjected to overfishing and is neither overfished nor approaching an overfished condition.
 
-*Area apportionment*
+*BRDs*
 
 ```{r pollockapp}
 df %>% 
@@ -150,7 +150,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r pcod-app}
 df %>% 
@@ -212,7 +212,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r sablefish-app}
 df %>% 
@@ -277,7 +277,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r shallow-flat-app}
 df %>% 
@@ -334,7 +334,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r deep-flat-app}
 df %>% 
@@ -391,7 +391,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r rex-app}
 df %>% 
@@ -449,7 +449,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r arrowtooth-app}
 df %>% 
@@ -505,7 +505,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r flathead-app}
 df %>% 
@@ -564,7 +564,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r pop-app}
 df %>% 
@@ -583,7 +583,7 @@ app %>%
 ```
 Amendment 41 prohibited trawling in the Eastern area east of 140$^\circ$ W longitude. 
 The Team and authors consider the biomass in the W. Yakutat area (between 147$^\circ$ W and 140$^\circ$ W) to be fishable, and therefore estimate the proportion of biomass in this sub-region for ABC considerations. 
-The proportion of biomass between the W. Yakutat and E. Yakutat/Southeast areas **is unchanged from the 2021 assessment**, and resulted in the following ABC apportionment of the Eastern Gulf area: 
+The proportion of biomass between the W. Yakutat and E. Yakutat/Southeast areas **is unchanged from the 2021 assessment**, and resulted in the following BRDs apportioned for the Eastern Gulf area: 
 
 ```{r pop-app2}
 app %>% 
@@ -648,7 +648,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r nork-app}
 df %>% 
@@ -662,7 +662,7 @@ df %>%
   
   flextable::font(
       flextable::footnote(tbl,i=1, j=4, part = "header", ref_symbols = "*",
-                          value = flextable::as_paragraph((" Note that the small northern rockfish ABC apportionments from the Eastern Gulf are combined with the other rockfish complex ABC in the West Yakutat management area for management purposes and are removed here from the Team recommended apportionments and ABC totals for northern rockfish. "),
+                          value = flextable::as_paragraph((" Note that the small northern rockfish BRD from the Eastern Gulf are combined with the other rockfish complex ABC in the West Yakutat management area for management purposes and are removed here from the Team recommended BRDs and ABC for northern rockfish. "),
                           sep = ".")),
       fontname = "Times New Roman") %>% 
   flextable::colformat_num(j=1, big.mark = "") %>% 
@@ -713,7 +713,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r shortraker-app}
 df %>% 
@@ -770,7 +770,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r dusky-app}
 df %>% 
@@ -790,7 +790,7 @@ app %>%
 
 Amendment 41 prohibited trawling in the Eastern area east of 140$^\circ$ W longitude. 
 The ratio of biomass still obtainable in the W. Yakutat area (between 147$^\circ$ W and 140$^\circ$ W) is **0.74**. 
-This results in the following apportionment to the W. Yakutat area: 
+This results in the following BRD to the W. Yakutat area: 
 
 ```{r dusky-app2}
 app %>% 
@@ -843,7 +843,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r rebs-app}
 df %>% 
@@ -899,7 +899,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 The ABC and OFL for DSR are for the SEO District. 
 DSR management is deferred to the State of Alaska and any further apportionment within the SEO District is at the discretion of the State.
 
@@ -944,7 +944,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r thornyhead-app}
 df %>% 
@@ -1002,7 +1002,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*
+*BRDs*
 
 ```{r orox-app}
 df %>% 
@@ -1014,7 +1014,7 @@ df %>%
   
   flextable::font(
       flextable::footnote(tbl,i=1, j=3, part = "header", ref_symbols = "*",
-                          value = flextable::as_paragraph(("Note that the small northern rockfish ABC apportionments from EGOA are combined with OR in the WYAK management area and added for management purposes here from the Plan Team recommended apportionments for OR"),
+                          value = flextable::as_paragraph(("Note that the small northern rockfish BRDs from EGOA are combined with OR in the WYAK management area and added for management purposes here from the Plan Team recommended apportionments for OR"),
                           sep = ".")),
       fontname = "Times New Roman") %>% 
   flextable::colformat_num(j=1, big.mark = "") %>% 
@@ -1063,7 +1063,7 @@ df %>%
   flextable::fix_border_issues() 
 ```
 
-*Area apportionment*
+*BRDs*
 
 Atka mackerel are managed Gulf-wide. 
 
@@ -1111,7 +1111,7 @@ df %>%
   flextable::fix_border_issues() 
 ```
 
-*Area apportionment*
+*BRDs*
 Big and longnose skates have area-specific ABCs and Gulf-wide OFLs; other skates have a Gulf-wide ABC and OFL. 
 
 ```{r skates-app}
@@ -1178,7 +1178,7 @@ df %>%
 
 *Status determination*
 
-*Area apportionment*  
+*BRDs*  
 GOA sharks are managed Gulf-wide. 
 
 ## 20. Octopus
@@ -1214,6 +1214,6 @@ df %>%
   flextable::fix_border_issues() 
 ```
 
-*Area apportionment*
+*BRDs*
 
 GOA octopus are managed Gulf-wide. 
