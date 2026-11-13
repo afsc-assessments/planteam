@@ -18,3 +18,8 @@ inst/doc
 .DS_Store
 __pycache__/
 *.py[cod]
+
+*dev
+*2023
+*2024
+*2026
