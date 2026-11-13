@@ -50,7 +50,7 @@ catch_to_sheet <- function(year, data, area){
   bsai_levels = c("BSAI", "EBS", "BS", "AI", "Bogoslof", "BSAI/GOA", "EAI", "EAI/BS", "CAI", "WAI", "EBS/EAI", "CAI/WAI")
 
   # data ----
-  data <- vroom::vroom(here::here("dev", 2024, "catch_table_nov_pt.csv"))
+  data <- vroom::vroom(here::here("H:/GitHub/planteam/catch updates/goa_nov_pt26.csv"))
   if(area=='goa'){
   df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1uHmCuY3GXfSBCbsP61nAQeATBfoslXeS3PQNLlioWIk/edit#gid=1812144961",
                                   sheet = "goa",
